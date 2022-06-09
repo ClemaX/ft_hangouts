@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_settings">Paramètres</string>
+    <string name="list_fragment_label">Contacts</string>
+    <string name="edit_fragment_label">Éditer Contact</string>
+    <string name="next">Prochain</string>
+    <string name="previous">Précédent</string>
+    <string name="action_add_contact">Ajouter Contact</string>
+</resources>
