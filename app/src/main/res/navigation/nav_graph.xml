@@ -3,26 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/ListFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="me.chamada.ft_hangouts.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        android:id="@+id/ListFragment"
+        android:name="me.chamada.ft_hangouts.ListFragment"
+        android:label="@string/list_fragment_label"
+        tools:layout="@layout/fragment_contact_list">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_ListFragment_to_EditFragment"
+            app:destination="@id/EditFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="me.chamada.ft_hangouts.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        android:id="@+id/EditFragment"
+        android:name="me.chamada.ft_hangouts.EditFragment"
+        android:label="@string/edit_fragment_label"
+        tools:layout="@layout/fragment_contact_edit">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_EditFragment_to_ListFragment"
+            app:destination="@id/ListFragment" />
     </fragment>
 </navigation>
