@@ -5,7 +5,7 @@
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.21" />
-        <entry key="app/src/main/res/layout/fragment_contact_edit.xml" value="0.13541666666666666" />
+        <entry key="app/src/main/res/layout/fragment_contact_edit.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_contact_list.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.13134057971014493" />
       </map>

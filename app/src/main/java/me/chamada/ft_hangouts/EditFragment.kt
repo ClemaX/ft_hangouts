@@ -23,17 +23,14 @@ class EditFragment : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentContactEditBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.buttonSecond.setOnClickListener {
-            findNavController().navigate(R.id.action_EditFragment_to_ListFragment)
+        binding.buttonCancel.setOnClickListener {
+            findNavController().popBackStack()
         }
     }
 

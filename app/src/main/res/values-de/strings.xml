@@ -6,4 +6,9 @@
     <string name="next">Weiter</string>
     <string name="previous">Zurück</string>
     <string name="action_add_contact">Kontakt Hinzufügen</string>
+    <string name="name">Name</string>
+    <string name="contact_name">Kontaktname</string>
+    <string name="phone_number">Telefonnummer</string>
+    <string name="contact_phone_number">Telefonnummer des Kontakts</string>
+    <string name="done">Speichern</string>
 </resources>
