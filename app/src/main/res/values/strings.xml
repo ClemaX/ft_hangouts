@@ -13,4 +13,6 @@
     <string name="phone_number">Phone Number</string>
     <string name="contact_phone_number">Contact Phone Number</string>
     <string name="done">Done</string>
+    <string name="action_pre_seed">Pre-seed</string>
+    <string name="action_clear">Clear</string>
 </resources>

@@ -11,4 +11,6 @@
     <string name="phone_number">Numéro de Téléphone</string>
     <string name="contact_phone_number">Numéro de Téléphone du Contact</string>
     <string name="done">Enregistrer</string>
+    <string name="action_pre_seed">Prégénérer</string>
+    <string name="action_clear">Vider</string>
 </resources>

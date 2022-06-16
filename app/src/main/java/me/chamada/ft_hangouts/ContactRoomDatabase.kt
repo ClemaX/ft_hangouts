@@ -20,9 +20,6 @@ abstract class ContactRoomDatabase : RoomDatabase() {
 
         suspend fun populateDatabase(dao: ContactDAO) {
             dao.deleteAll()
-
-            val testContact = Contact(id = 0, name = "Full Name", phoneNumber = "+33 7 77 77 77")
-            dao.insert(testContact)
         }
     }
 
@@ -39,6 +36,7 @@ abstract class ContactRoomDatabase : RoomDatabase() {
                 )
                     .addCallback(ContactDatabaseCallback(scope))
                     .build()
+
                 INSTANCE = instance
 
                 instance

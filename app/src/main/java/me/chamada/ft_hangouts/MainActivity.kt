@@ -8,6 +8,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
 import me.chamada.ft_hangouts.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -40,13 +41,30 @@ class MainActivity : AppCompatActivity() {
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_settings -> true
+            R.id.action_pre_seed -> {
+                val viewModel: ContactViewModel by viewModels {
+                    ContactViewModelFactory((applicationContext as ContactApplication).repository)
+                }
+
+                viewModel.preSeed()
+
+                true
+            }
+            R.id.action_clear -> {
+                val viewModel: ContactViewModel by viewModels {
+                    ContactViewModelFactory((applicationContext as ContactApplication).repository)
+                }
+
+                viewModel.deleteAll()
+
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }
