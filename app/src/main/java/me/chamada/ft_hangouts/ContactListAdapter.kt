@@ -12,15 +12,18 @@ fun interface OnContactClickListener {
     fun onClick(contact: Contact, view: View?)
 }
 
-class ContactListAdapter(private val clickListener: OnContactClickListener?)
-    : ListAdapter<Contact, ContactListAdapter.ContactViewHolder>(ContactComparator()) {
-    class ContactViewHolder(itemView: View, private val clickListener: OnContactClickListener?)
-        : RecyclerView.ViewHolder(itemView) {
+class ContactListAdapter(private val clickListener: OnContactClickListener?) :
+    ListAdapter<Contact, ContactListAdapter.ContactViewHolder>(ContactComparator()) {
+    class ContactViewHolder(itemView: View, private val clickListener: OnContactClickListener?) :
+        RecyclerView.ViewHolder(itemView) {
         private val contactNameView: TextView = itemView.findViewById(R.id.name)
         private val contactPhoneNumberView: TextView = itemView.findViewById(R.id.phoneNumber)
 
         companion object {
-            fun create(parent: ViewGroup, clickListener: OnContactClickListener?) : ContactViewHolder {
+            fun create(
+                parent: ViewGroup,
+                clickListener: OnContactClickListener?
+            ): ContactViewHolder {
                 val view: View = LayoutInflater.from(parent.context)
                     .inflate(R.layout.list_element_contact, parent, false)
 

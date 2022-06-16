@@ -10,7 +10,7 @@ class ContactRepository(private val dao: ContactDAO) {
     @WorkerThread
     suspend fun getOne(id: Int) = dao.getOne(id)
 */
-    
+
     @WorkerThread
     suspend fun insert(contact: Contact) {
         dao.insert(contact)

@@ -20,11 +20,13 @@ class EditFragment : Fragment() {
     private val binding get() = _binding!!
     private var contact
         get() = _contact!!
-        set(value) { _contact = value }
+        set(value) {
+            _contact = value
+        }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         _binding = FragmentContactEditBinding.inflate(inflater, container, false)
         return binding.root

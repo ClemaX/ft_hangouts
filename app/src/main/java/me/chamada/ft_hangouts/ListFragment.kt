@@ -31,8 +31,8 @@ class ListFragment : Fragment() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
 
         _binding = FragmentContactListBinding.inflate(inflater, container, false)
@@ -43,7 +43,7 @@ class ListFragment : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        viewModel.all.observe(requireActivity() ) { contacts ->
+        viewModel.all.observe(requireActivity()) { contacts ->
             contacts?.let { adapter.submitList(contacts) }
         }
 

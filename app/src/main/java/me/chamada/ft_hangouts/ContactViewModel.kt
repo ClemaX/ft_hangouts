@@ -13,7 +13,8 @@ fun randomName(length: Int = kotlin.random.Random.nextInt(nameMinLength, nameMax
     return (1..length)
         .map {
             if (random.nextInt(0, 11) == 10) nameCharPool.size - 1
-            else random.nextInt(0, nameCharPool.size - 1) }
+            else random.nextInt(0, nameCharPool.size - 1)
+        }
         .map(nameCharPool::get)
         .joinToString("")
 }
@@ -22,11 +23,11 @@ class ContactViewModel(private val repository: ContactRepository) : ViewModel() 
     var all: LiveData<List<Contact>> = repository.all.asLiveData()
     var current: Contact? = null
 
-/*
-    fun updateCurrent() {
-        current?.let { update(it) }
-    }
-*/
+    /*
+        fun updateCurrent() {
+            current?.let { update(it) }
+        }
+    */
 /*
     fun getOne(id: Int) = viewModelScope.launch{
         repository.getOne(id)
@@ -50,7 +51,8 @@ class ContactViewModel(private val repository: ContactRepository) : ViewModel() 
     }
 }
 
-class ContactViewModelFactory(private val repository: ContactRepository) : ViewModelProvider.Factory {
+class ContactViewModelFactory(private val repository: ContactRepository) :
+    ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ContactViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

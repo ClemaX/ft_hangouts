@@ -10,8 +10,7 @@ import kotlinx.coroutines.launch
 
 @Database(entities = [Contact::class], version = 1, exportSchema = false)
 abstract class ContactRoomDatabase : RoomDatabase() {
-    private class ContactDatabaseCallback(private val scope: CoroutineScope)
-        : Callback() {
+    private class ContactDatabaseCallback(private val scope: CoroutineScope) : Callback() {
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
 
