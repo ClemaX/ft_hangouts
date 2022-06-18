@@ -43,7 +43,7 @@ class ListFragment : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        viewModel.all.observe(requireActivity()) { contacts ->
+        viewModel.all.observe(viewLifecycleOwner) { contacts ->
             contacts?.let { adapter.submitList(contacts) }
         }
 
