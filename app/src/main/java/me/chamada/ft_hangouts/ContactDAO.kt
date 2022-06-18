@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ContactDAO {
-    @Query("SELECT * FROM contacts ORDER BY name ASC")
+    @Query("SELECT * FROM contacts ORDER BY name COLLATE NOCASE ASC")
     fun getAll(): Flow<List<Contact>>
 
 /*
