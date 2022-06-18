@@ -34,7 +34,7 @@ class EditFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val viewModel: ContactViewModel by activityViewModels() {
+        val viewModel: ContactViewModel by activityViewModels {
             ContactViewModelFactory((requireContext().applicationContext as ContactApplication).repository)
         }
 
@@ -51,16 +51,16 @@ class EditFragment : Fragment() {
         binding.buttonCancel.setOnClickListener {
             navController.popBackStack()
         }
+
         binding.buttonDone.setOnClickListener {
-            contact = Contact(
-                id = contact.id,
+            contact = contact.copy(
                 name = binding.editName.text.toString(),
                 phoneNumber = binding.editPhoneNumber.text.toString()
             )
 
             if (contact.id == 0)
                 viewModel.insert(contact)
-            else
+            else if (contact != viewModel.current)
                 viewModel.update(contact)
 
             navController.navigateUp()
