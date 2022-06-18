@@ -12,7 +12,7 @@ fun interface OnContactClickListener {
     fun onClick(contact: Contact, view: View?)
 }
 
-class ContactListAdapter(private val clickListener: OnContactClickListener?) :
+open class ContactListAdapter(private val clickListener: OnContactClickListener?) :
     ListAdapter<Contact, ContactListAdapter.ContactViewHolder>(ContactComparator()) {
     class ContactViewHolder(itemView: View, private val clickListener: OnContactClickListener?) :
         RecyclerView.ViewHolder(itemView) {
@@ -46,11 +46,11 @@ class ContactListAdapter(private val clickListener: OnContactClickListener?) :
 
     class ContactComparator : DiffUtil.ItemCallback<Contact>() {
         override fun areItemsTheSame(oldItem: Contact, newItem: Contact): Boolean {
-            return oldItem === newItem
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: Contact, newItem: Contact): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem == newItem
         }
     }
 
