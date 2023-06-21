@@ -15,4 +15,6 @@
     <string name="done">Done</string>
     <string name="action_pre_seed">Pre-seed</string>
     <string name="action_clear">Clear</string>
+    <string name="scroller_bubble">Scroller bubble</string>
+    <string name="scroller_thumb">Scroller handle</string>
 </resources>

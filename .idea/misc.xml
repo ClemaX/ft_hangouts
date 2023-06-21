@@ -4,10 +4,20 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/debug/res/menu/menu_main.xml" value="0.2" />
+        <entry key="app/src/main/res/drawable/fastscroller_bubble.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/fastscroller_handle.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/fastscroller_thumb.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/scroll_horizontal_thumb.xml" value="0.193" />
+        <entry key="app/src/main/res/drawable/scroll_horizontal_track.xml" value="0.193" />
+        <entry key="app/src/main/res/drawable/scroll_line.xml" value="0.193" />
+        <entry key="app/src/main/res/drawable/scroll_thumb.xml" value="0.193" />
+        <entry key="app/src/main/res/drawable/scroll_vertical_thumb.xml" value="0.193" />
+        <entry key="app/src/main/res/drawable/scroll_vertical_track.xml" value="0.193" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.21" />
+        <entry key="app/src/main/res/layout/fastscroller.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_contact_edit.xml" value="0.2" />
-        <entry key="app/src/main/res/layout/fragment_contact_list.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_contact_list.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.13134057971014493" />
         <entry key="app/src/main/res/layout/list_element_contact.xml" value="0.25" />
         <entry key="app/src/main/res/layout/list_element_contact_name.xml" value="0.1" />

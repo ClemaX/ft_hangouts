@@ -21,7 +21,7 @@ class ListFragment : Fragment() {
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
-    private val viewModel: ContactViewModel by activityViewModels() {
+    private val viewModel: ContactViewModel by activityViewModels {
         ContactViewModelFactory((requireContext().applicationContext as ContactApplication).repository)
     }
 
@@ -34,14 +34,17 @@ class ListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentContactListBinding.inflate(inflater, container, false)
 
         val recyclerView = binding.recyclerView
-        val adapter = ContactListAdapter { contact, _ -> editContact(contact) }
+        val fastScroller = binding.fastScroller
+
+        val adapter = ContactListSectionAdapter { contact, _ -> editContact(contact) }
 
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        fastScroller.recyclerView = recyclerView
 
         viewModel.all.observe(viewLifecycleOwner) { contacts ->
             contacts?.let { adapter.submitList(contacts) }

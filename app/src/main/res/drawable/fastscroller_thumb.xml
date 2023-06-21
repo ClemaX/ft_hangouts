@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle" >
+
+    <corners android:radius="@dimen/fastscroller_bubble_corner"/>
+
+    <solid android:color="?android:colorAccent" />
+
+    <size
+        android:width="@dimen/fastscroller_thumb_width"
+        android:height="@dimen/fastscroller_thumb_height" />
+</shape>
