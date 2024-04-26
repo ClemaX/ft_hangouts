@@ -17,6 +17,7 @@ fun randomName(length: Int = kotlin.random.Random.nextInt(nameMinLength, nameMax
         }
         .map(nameCharPool::get)
         .joinToString("")
+        .trimStart()
 }
 
 class ContactViewModel(private val repository: ContactRepository) : ViewModel() {
