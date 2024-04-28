@@ -54,8 +54,8 @@ class EditFragment : Fragment() {
 
         binding.buttonDone.setOnClickListener {
             contact = contact.copy(
-                name = binding.editName.text.toString(),
-                phoneNumber = binding.editPhoneNumber.text.toString()
+                name = binding.editName.text.toString().trim(),
+                phoneNumber = binding.editPhoneNumber.text.toString().trim()
             )
 
             if (contact.id == 0)

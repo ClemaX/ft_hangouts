@@ -18,6 +18,7 @@ open class ContactListAdapter(private val clickListener: OnContactClickListener?
         RecyclerView.ViewHolder(itemView) {
         private val contactNameView: TextView = itemView.findViewById(R.id.name)
         private val contactPhoneNumberView: TextView = itemView.findViewById(R.id.phoneNumber)
+        private val contactInitialsTextView: TextView = itemView.findViewById(R.id.initials)
 
         companion object {
             fun create(
@@ -29,12 +30,36 @@ open class ContactListAdapter(private val clickListener: OnContactClickListener?
 
                 return ContactViewHolder(view, clickListener)
             }
+
+            fun getInitials(contact: Contact): String {
+                val names = contact.name
+                    .trim()
+                    .split(Regex("""\s+"""))
+                    .takeIf{ it.size > 1 || it[0].isNotEmpty() }
+                    ?: emptyList()
+
+                println(names);
+
+                val initialsString = if (names.isNotEmpty()) {
+                    names.foldIndexed("") { i, acc, name ->
+                        when (i) {
+                            0, 1, names.count() - 1 -> acc + name[0].uppercaseChar()
+                            else -> acc
+                        }
+                    } ?: ""
+                } else {
+                    contact.phoneNumber.slice(IntRange(0, 1));
+                }
+
+                return initialsString;
+            }
         }
 
         fun bind(contact: Contact?) {
             if (contact != null) {
-                contactNameView.text = contact.name
+                contactNameView.text = contact.name.ifEmpty { contact.phoneNumber }
                 contactPhoneNumberView.text = contact.phoneNumber
+                contactInitialsTextView.text = getInitials(contact)
 
                 if (clickListener != null)
                     itemView.setOnClickListener {
