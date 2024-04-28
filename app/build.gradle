@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace 'me.chamada.ft_hangouts'
-    compileSdk 32
+    compileSdk 34
 
     defaultConfig {
         applicationId "me.chamada.ft_hangouts"
         minSdk 22
-        targetSdk 32
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
