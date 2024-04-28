@@ -21,7 +21,7 @@ class ListFragment : Fragment() {
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
-    private val viewModel: ContactViewModel by activityViewModels() {
+    private val viewModel: ContactViewModel by activityViewModels {
         ContactViewModelFactory((requireContext().applicationContext as ContactApplication).repository)
     }
 
