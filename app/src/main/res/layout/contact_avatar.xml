@@ -22,7 +22,7 @@
         android:textAlignment="center"
         android:maxLines="1"
         android:textStyle="bold"
-        android:layout_margin="8dp"
+        android:layout_margin="12dp"
         app:autoSizeTextType="uniform"
         android:textColor="@color/white"
         tools:text="JKL" />
