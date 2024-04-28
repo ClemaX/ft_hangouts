@@ -1,25 +1,25 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.coreVersion = '1.8.0'
-    ext.appCompatVersion = '1.4.2'
+    ext.coreVersion = '1.13.0'
+    ext.appCompatVersion = '1.6.1'
 
     // Room components
-    ext.roomVersion = '2.4.2'
-    ext.lifecycleVersion = '2.4.1'
+    ext.roomVersion = '2.6.1'
+    ext.lifecycleVersion = '2.7.0'
 
     // UI
-    ext.materialVersion = '1.6.1'
+    ext.materialVersion = '1.11.0'
     ext.constraintLayoutVersion = '2.1.4'
-    ext.navigationVersion = '2.4.2'
+    ext.navigationVersion = '2.7.7'
 
     // Testing
     ext.junitVersion = '4.13.2'
-    ext.coreTestingVersion = '1.1.3'
-    ext.espressoVersion = '3.4.0'
+    ext.coreTestingVersion = '1.1.5'
+    ext.espressoVersion = '3.5.1'
 }
 
 plugins {
     id 'com.android.application' version '8.3.2' apply false
     id 'com.android.library' version '8.3.2' apply false
-    id 'org.jetbrains.kotlin.android' version '1.6.21' apply false
+    id 'org.jetbrains.kotlin.android' version '1.9.23' apply false
 }
