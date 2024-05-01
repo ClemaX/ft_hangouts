@@ -12,9 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import me.chamada.ft_hangouts.databinding.FragmentContactListBinding
 
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
 class ListFragment : Fragment() {
 
     private var _binding: FragmentContactListBinding? = null
@@ -24,6 +21,19 @@ class ListFragment : Fragment() {
 
     private val viewModel: ContactViewModel by activityViewModels {
         ContactViewModelFactory((requireContext().applicationContext as ContactApplication).repository)
+    }
+
+    inner class OnQueryTextListener(private val adapter: ContactListAdapter) :
+        SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            return false
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+            adapter.filter.filter(newText)
+
+            return false
+        }
     }
 
     private fun editContact(contact: Contact? = null) {
@@ -37,48 +47,26 @@ class ListFragment : Fragment() {
     ): View {
         _binding = FragmentContactListBinding.inflate(inflater, container, false)
 
-        val recyclerView = binding.recyclerView
-        val scroller = binding.scroller
-
         val adapter = ContactListAdapter { contact, _ -> editContact(contact) }
 
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.apply {
+            val queryListener = OnQueryTextListener(adapter)
+            val scrollerScrollListener = RecyclerViewIndexedScroller.OnScrollListener(scroller)
 
-        scroller.recyclerView = recyclerView
+            recyclerView.adapter = adapter
+            recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        val scrollerScrollListener = RecyclerViewIndexedScroller.OnScrollListener(scroller)
+            scroller.recyclerView = recyclerView
 
-        recyclerView.addOnScrollListener(scrollerScrollListener)
+            recyclerView.addOnScrollListener(scrollerScrollListener)
+            searchBar.setOnQueryTextListener(queryListener)
+        }
 
         viewModel.all.observe(viewLifecycleOwner) { contacts ->
             contacts?.let {
-                /*val indices = contacts.map { contact ->
-                    val index =
-                        if (contact.name.isNotEmpty()) contact.name [0]
-                        else contact.phoneNumber[0]
-
-                    index.uppercase().toString()
-                }.toSet()
-                println(indices)*/
-
                 adapter.submitList(contacts)
             }
         }
-
-        val queryListener = object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                adapter.filter.filter(newText)
-
-                return false
-            }
-        }
-
-        binding.searchBar.setOnQueryTextListener(queryListener)
 
         return binding.root
     }
