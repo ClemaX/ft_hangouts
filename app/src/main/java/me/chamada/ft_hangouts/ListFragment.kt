@@ -1,5 +1,6 @@
 package me.chamada.ft_hangouts
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import me.chamada.ft_hangouts.databinding.FragmentContactListBinding
 
 
@@ -25,7 +27,7 @@ class ListFragment : Fragment() {
         ContactViewModel.Factory(repository)
     }
 
-    class OnQueryTextListener(private val adapter: ContactListAdapter) :
+    private class OnQueryTextListener(private val adapter: ContactListAdapter) :
         SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             return false
@@ -38,11 +40,23 @@ class ListFragment : Fragment() {
         }
     }
 
+    private class ScrollerChangeListener(private val fab: FloatingActionButton):
+        RecyclerViewIndexedScroller.OnScrollChangeListener() {
+        override fun onScrollStart() {
+            fab.hide()
+        }
+
+        override fun onScrollEnd() {
+            fab.show()
+        }
+    }
+
     private fun editContact(contact: Contact? = null) {
         viewModel.current = contact
         findNavController().navigate(R.id.action_ListFragment_to_EditFragment)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,11 +67,14 @@ class ListFragment : Fragment() {
 
         binding.apply {
             val queryListener = OnQueryTextListener(adapter)
+            val scrollerChangeListener = ScrollerChangeListener(fab)
 
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
             scroller.recyclerView = recyclerView
+
+            scroller.setOnScrollChangeListener(scrollerChangeListener)
 
             searchBar.setOnQueryTextListener(queryListener)
         }

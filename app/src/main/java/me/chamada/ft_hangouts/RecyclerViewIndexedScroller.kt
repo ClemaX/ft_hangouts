@@ -100,8 +100,7 @@ class RecyclerViewIndexedScroller(context: Context, attrs: AttributeSet) : View(
     private var lastActivityTimeNs: Long = System.nanoTime()
 
     private val scrollerScrollListener = OnScrollListener(this)
-
-    private val scrollChangeListeners: MutableList<OnScrollChangeListener> = emptyList<OnScrollChangeListener>().toMutableList();
+    private val scrollChangeListeners = mutableListOf<OnScrollChangeListener>()
 
     init {
         val colorSecondary = MaterialColors.getColor(context, attr.colorSecondary, Color.BLACK)
@@ -362,6 +361,7 @@ class RecyclerViewIndexedScroller(context: Context, attrs: AttributeSet) : View(
     fun removeOnScrollChangeListener(l: OnScrollChangeListener) {
         scrollChangeListeners.remove(l)
     }
+
     fun setIndexLabelText(text: String?) {
         indexLabelText = text
         indexLabelPaint.getTextBounds(text, 0, text?.length ?: 0, textBounds)
