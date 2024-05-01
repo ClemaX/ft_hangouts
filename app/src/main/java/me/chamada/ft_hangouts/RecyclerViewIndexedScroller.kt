@@ -86,6 +86,7 @@ class RecyclerViewIndexedScroller(context: Context, attrs: AttributeSet) : View(
 
     init {
         val colorSecondary = MaterialColors.getColor(context, attr.colorSecondary, Color.BLACK)
+        val colorSecondaryVariant = MaterialColors.getColor(context, attr.colorSecondaryVariant, Color.BLACK)
 
         val colorOnSurface = MaterialColors.getColor(context, attr.colorOnSurface, Color.GRAY)
         val colorOnSecondary = MaterialColors.getColor(context, attr.colorOnSecondary, Color.BLACK)
@@ -136,7 +137,7 @@ class RecyclerViewIndexedScroller(context: Context, attrs: AttributeSet) : View(
                 indexLabelBackgroundPaint.apply {
                     color = getInt(
                         R.styleable.RecyclerViewIndexedScroller_indexLabelBackground,
-                        colorOnSecondary
+                        colorSecondaryVariant
                     )
                 }
 

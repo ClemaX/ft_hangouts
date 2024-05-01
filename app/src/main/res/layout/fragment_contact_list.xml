@@ -32,16 +32,12 @@
         android:id="@+id/scroller"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
+        app:thumbWidth="12sp"
+        app:trackColor="@android:color/transparent"
         app:layout_constraintTop_toBottomOf="@id/search_bar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
-
-        app:thumbWidth="12sp"
-        app:thumbColor="@color/white"
-        app:trackColor="@color/material_dynamic_secondary50"
-        app:indexLabelBackground="@color/white"
-        app:indexLabelColor="@color/black"
     />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
