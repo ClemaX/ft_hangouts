@@ -38,7 +38,9 @@
             android:layout_height="match_parent"
             android:layout_gravity="end"
             app:thumbWidth="12sp"
-            app:trackColor="@android:color/transparent" />
+            app:trackColor="@android:color/transparent"
+            app:thumbColor="@android:color/transparent"
+            app:thumbPressedColor="@android:color/transparent" />
     </FrameLayout>
 
 
