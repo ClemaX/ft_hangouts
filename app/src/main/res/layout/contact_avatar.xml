@@ -21,9 +21,9 @@
         android:gravity="center"
         android:textAlignment="center"
         android:maxLines="1"
+        android:layout_margin="8dp"
         android:textStyle="bold"
-        android:layout_margin="12dp"
-        app:autoSizeTextType="uniform"
         android:textColor="@color/white"
+        app:autoSizeTextType="uniform"
         tools:text="JKL" />
 </FrameLayout>
