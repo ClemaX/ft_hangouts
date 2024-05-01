@@ -14,4 +14,5 @@
     <string name="action_pre_seed">Prégénérer</string>
     <string name="action_clear">Vider</string>
     <string name="contact_avatar">Photo de Profile</string>
+    <string name="search_contact">Chercher un contact</string>
 </resources>

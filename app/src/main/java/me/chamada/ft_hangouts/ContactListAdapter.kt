@@ -4,6 +4,8 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
@@ -16,7 +18,12 @@ fun interface OnContactClickListener {
 }
 
 open class ContactListAdapter(private val clickListener: OnContactClickListener?) :
-    ListAdapter<Contact, ContactListAdapter.ContactViewHolder>(ContactComparator()) {
+    ListAdapter<Contact, ContactListAdapter.ContactViewHolder>(ContactComparator()),
+    Filterable,
+    RecyclerViewIndexedScroller.IndexLabelListener {
+    private var contactList: List<Contact>? = null
+    private var contactFilter: Filter = ContactFilter()
+
     class ContactViewHolder(itemView: View, private val clickListener: OnContactClickListener?) :
         RecyclerView.ViewHolder(itemView) {
         private val contactNameView: TextView = itemView.findViewById(R.id.name)
@@ -77,6 +84,7 @@ open class ContactListAdapter(private val clickListener: OnContactClickListener?
                     }
             }
         }
+
     }
 
     class ContactComparator : DiffUtil.ItemCallback<Contact>() {
@@ -89,6 +97,41 @@ open class ContactListAdapter(private val clickListener: OnContactClickListener?
         }
     }
 
+    inner class ContactFilter : Filter() {
+        override fun performFiltering(constraint: CharSequence?): FilterResults? {
+            val totalList = contactList
+
+            if (totalList.isNullOrEmpty())
+                return null
+
+
+            val filteredList = if (!constraint.isNullOrEmpty()) {
+                val trimmedConstraint = constraint.trim()
+                totalList.filter { contact ->
+                    contact.name.contains(trimmedConstraint, ignoreCase = true)
+                    || contact.phoneNumber.contains(trimmedConstraint, ignoreCase = true)
+                }
+            }
+            else {
+                totalList
+            }
+
+            val results = FilterResults()
+
+            results.values = filteredList.toMutableList()
+            results.count = filteredList.size
+
+            return results
+        }
+
+        override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+            if (results != null) {
+                @Suppress("UNCHECKED_CAST")
+                super@ContactListAdapter.submitList(results.values as MutableList<Contact>)
+            }
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
         return ContactViewHolder.create(parent, clickListener)
     }
@@ -97,5 +140,22 @@ open class ContactListAdapter(private val clickListener: OnContactClickListener?
         val current = getItem(position)
 
         return holder.bind(current)
+    }
+
+    override fun submitList(list: List<Contact>?) {
+        contactList = list
+
+        super.submitList(list)
+    }
+
+    override fun getFilter(): Filter {
+        return contactFilter
+    }
+
+    override fun getIndexLabel(position: Int): String {
+        val contact = contactList?.get(position)?: return ""
+        val name = contact.name.ifEmpty { contact.phoneNumber }
+
+        return name[0].uppercase()
     }
 }

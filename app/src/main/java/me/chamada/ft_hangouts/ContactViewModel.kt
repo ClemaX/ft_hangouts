@@ -24,16 +24,6 @@ class ContactViewModel(private val repository: ContactRepository) : ViewModel() 
     var all: LiveData<List<Contact>> = repository.all.asLiveData()
     var current: Contact? = null
 
-    /*
-        fun updateCurrent() {
-            current?.let { update(it) }
-        }
-    */
-/*
-    fun getOne(id: Int) = viewModelScope.launch{
-        repository.getOne(id)
-    }
-*/
     fun insert(contact: Contact) = viewModelScope.launch {
         repository.insert(contact)
     }
@@ -62,5 +52,4 @@ class ContactViewModelFactory(private val repository: ContactRepository) :
 
         throw IllegalArgumentException("Unknown ViewModel class")
     }
-
 }

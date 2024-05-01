@@ -13,9 +13,12 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import me.chamada.ft_hangouts.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+
+    private val viewModel: ContactViewModel by viewModels {
+        ContactViewModelFactory((applicationContext as ContactApplication).repository)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
+        //setSupportActionBar(binding.toolbar)
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
         val navController = navHostFragment.navController
@@ -43,21 +46,15 @@ class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_settings -> {
+                true
+            }
             R.id.action_pre_seed -> {
-                val viewModel: ContactViewModel by viewModels {
-                    ContactViewModelFactory((applicationContext as ContactApplication).repository)
-                }
-
                 viewModel.preSeed()
 
                 true
             }
             R.id.action_clear -> {
-                val viewModel: ContactViewModel by viewModels {
-                    ContactViewModelFactory((applicationContext as ContactApplication).repository)
-                }
-
                 viewModel.deleteAll()
 
                 true

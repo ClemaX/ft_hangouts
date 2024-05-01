@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RecyclerViewIndexedScroller">
+        <attr name="thumbWidth" format="dimension" />
+        <attr name="thumbMinHeight" format="dimension" />
+
+        <attr name="indexLabelSize" format="dimension" />
+        <attr name="indexLabelTextSize" format="dimension" />
+
+        <attr name="thumbColor" format="reference|color" />
+        <attr name="thumbPressedColor" format="reference|color" />
+        <attr name="trackColor" format="reference|color" />
+
+        <attr name="indexLabelBackground" format="reference|color" />
+        <attr name="indexLabelColor" format="reference|color" />
+    </declare-styleable>
+</resources>
