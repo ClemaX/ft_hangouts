@@ -3,19 +3,23 @@ package me.chamada.ft_hangouts
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import me.chamada.ft_hangouts.databinding.FragmentContactListBinding
 
 
-class ListFragment : Fragment() {
-
+class ListFragment : Fragment(), MenuProvider {
     private var _binding: FragmentContactListBinding? = null
 
     // This property is only valid between onCreateView and onDestroyView.
@@ -26,6 +30,8 @@ class ListFragment : Fragment() {
 
         ContactViewModel.Factory(repository)
     }
+
+    private val adapter = ContactListAdapter { contact, _ -> editContact(contact) }
 
     private class OnQueryTextListener(private val adapter: ContactListAdapter) :
         SearchView.OnQueryTextListener {
@@ -63,10 +69,11 @@ class ListFragment : Fragment() {
     ): View {
         _binding = FragmentContactListBinding.inflate(inflater, container, false)
 
-        val adapter = ContactListAdapter { contact, _ -> editContact(contact) }
+        val activity = requireActivity()
+
+        activity.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
         binding.apply {
-            val queryListener = OnQueryTextListener(adapter)
             val scrollerChangeListener = ScrollerChangeListener(fab)
 
             recyclerView.adapter = adapter
@@ -75,8 +82,6 @@ class ListFragment : Fragment() {
             scroller.recyclerView = recyclerView
 
             scroller.setOnScrollChangeListener(scrollerChangeListener)
-
-            searchBar.setOnQueryTextListener(queryListener)
         }
 
         viewModel.all.observe(viewLifecycleOwner) { contacts ->
@@ -95,5 +100,42 @@ class ListFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.menu_main, menu)
+
+        val searchMenuItem = menu.findItem(R.id.action_search)
+
+        (searchMenuItem.actionView as SearchView?)?.apply {
+            val queryListener = OnQueryTextListener(adapter)
+
+            queryHint = resources.getString(R.string.search_contact)
+            setOnQueryTextListener(queryListener)
+        }
+    }
+
+    override fun onMenuItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        return when (item.itemId) {
+            R.id.action_settings -> {
+                true
+            }
+            R.id.action_pre_seed -> {
+                viewModel.preSeed()
+
+                true
+            }
+            R.id.action_clear -> {
+                viewModel.deleteAll()
+
+                true
+            }
+            else -> false
+        }
     }
 }
