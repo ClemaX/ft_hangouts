@@ -53,14 +53,12 @@ class ListFragment : Fragment() {
 
         binding.apply {
             val queryListener = OnQueryTextListener(adapter)
-            val scrollerScrollListener = RecyclerViewIndexedScroller.OnScrollListener(scroller)
 
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
             scroller.recyclerView = recyclerView
 
-            recyclerView.addOnScrollListener(scrollerScrollListener)
             searchBar.setOnQueryTextListener(queryListener)
         }
 

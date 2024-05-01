@@ -24,7 +24,8 @@ class RecyclerViewIndexedScroller(context: Context, attrs: AttributeSet) : View(
         fun getIndexLabel(position: Int): String
     }
 
-    open class OnScrollListener(private val scroller: RecyclerViewIndexedScroller): RecyclerView.OnScrollListener() {
+    open class OnScrollListener(private val scroller: RecyclerViewIndexedScroller):
+        RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
 
@@ -55,6 +56,14 @@ class RecyclerViewIndexedScroller(context: Context, attrs: AttributeSet) : View(
     }
 
     var recyclerView: RecyclerView? = null
+        set(value) {
+            if (field != value) {
+                field?.removeOnScrollListener(scrollerScrollListener)
+                value?.addOnScrollListener(scrollerScrollListener)
+
+                field = value
+            }
+        }
 
     private var recyclerViewContentHeight: Int? = null
     private var recyclerViewScrollPosition: Int = 0
@@ -83,6 +92,9 @@ class RecyclerViewIndexedScroller(context: Context, attrs: AttributeSet) : View(
     private val indexLabelPaint = Paint()
 
     private var lastActivityTimeNs: Long = System.nanoTime()
+
+    private val scrollerScrollListener = OnScrollListener(this)
+
 
     init {
         val colorSecondary = MaterialColors.getColor(context, attr.colorSecondary, Color.BLACK)
@@ -169,8 +181,6 @@ class RecyclerViewIndexedScroller(context: Context, attrs: AttributeSet) : View(
             return
         }
 
-        println("Drawing...")
-
         canvas.apply {
             val savedState = save()
             val thumbX = (width - thumbWidth).toFloat()
@@ -250,12 +260,10 @@ class RecyclerViewIndexedScroller(context: Context, attrs: AttributeSet) : View(
                 thumbSelected = true
                 thumbPaint.color = thumbPressedColor
 
-                recyclerViewContentHeight?.let { height ->
-                    val scrollProportion = event.y / measuredHeight
-                    val position = (scrollProportion * measuredHeight).toInt()
+                val scrollProportion = event.y / measuredHeight
+                val position = (scrollProportion * measuredHeight).toInt()
 
-                    scrollToPosition(position)
-                }
+                scrollToPosition(position)
 
                 if (event.action == MotionEvent.ACTION_DOWN) {
                     invalidate()
