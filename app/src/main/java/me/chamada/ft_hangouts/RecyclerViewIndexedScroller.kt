@@ -36,7 +36,7 @@ class RecyclerViewIndexedScroller(context: Context, attrs: AttributeSet) : View(
 
             val adapter = recyclerView.adapter
 
-            if (adapter is IndexLabelListener) {
+            if (contentHeight != 0 && adapter is IndexLabelListener) {
                 val scrollProportion = scrollPosition / contentHeight.toFloat()
                 val position = (scrollProportion * adapter.itemCount).roundToInt()
 
