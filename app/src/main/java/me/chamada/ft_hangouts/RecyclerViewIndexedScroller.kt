@@ -25,7 +25,7 @@ class RecyclerViewIndexedScroller(context: Context, attrs: AttributeSet) : View(
         fun getIndexLabel(position: Int): String
     }
 
-    open class OnScrollListener(private val scroller: RecyclerViewIndexedScroller):
+    private class OnScrollListener(private val scroller: RecyclerViewIndexedScroller):
         RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
@@ -47,6 +47,11 @@ class RecyclerViewIndexedScroller(context: Context, attrs: AttributeSet) : View(
                 scroller.setIndexLabelText(indexLabelText)
             }
         }
+    }
+
+    abstract class OnScrollChangeListener {
+        abstract fun onScrollStart()
+        abstract fun onScrollEnd()
     }
 
     companion object {
@@ -96,6 +101,7 @@ class RecyclerViewIndexedScroller(context: Context, attrs: AttributeSet) : View(
 
     private val scrollerScrollListener = OnScrollListener(this)
 
+    private val scrollChangeListeners: MutableList<OnScrollChangeListener> = emptyList<OnScrollChangeListener>().toMutableList();
 
     init {
         val colorSecondary = MaterialColors.getColor(context, attr.colorSecondary, Color.BLACK)
@@ -269,6 +275,7 @@ class RecyclerViewIndexedScroller(context: Context, attrs: AttributeSet) : View(
 
                 if (event.action == MotionEvent.ACTION_DOWN) {
                     invalidate()
+                    dispatchScrollStart()
                 }
 
                 true
@@ -278,6 +285,7 @@ class RecyclerViewIndexedScroller(context: Context, attrs: AttributeSet) : View(
                 thumbPaint.color = thumbColor
 
                 invalidate()
+                dispatchScrollEnd()
 
                 true
             }
@@ -333,6 +341,27 @@ class RecyclerViewIndexedScroller(context: Context, attrs: AttributeSet) : View(
         }
     }
 
+    private fun dispatchScrollStart() {
+        for (listener in scrollChangeListeners) {
+            listener.onScrollStart()
+        }
+    }
+
+    private fun dispatchScrollEnd() {
+        for (listener in scrollChangeListeners) {
+            listener.onScrollEnd()
+        }
+    }
+
+    fun setOnScrollChangeListener(l: OnScrollChangeListener) {
+        if (!scrollChangeListeners.contains(l)) {
+            scrollChangeListeners.add(l)
+        }
+    }
+
+    fun removeOnScrollChangeListener(l: OnScrollChangeListener) {
+        scrollChangeListeners.remove(l)
+    }
     fun setIndexLabelText(text: String?) {
         indexLabelText = text
         indexLabelPaint.getTextBounds(text, 0, text?.length ?: 0, textBounds)
