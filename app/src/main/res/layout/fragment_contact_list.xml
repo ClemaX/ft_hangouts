@@ -17,28 +17,30 @@
         app:iconifiedByDefault="false"
         />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <FrameLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:nestedScrollingEnabled="false"
         app:layout_constraintTop_toBottomOf="@id/search_bar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/scroller"
-        tools:listitem="@layout/list_element_contact" />
+        app:layout_constraintEnd_toEndOf="parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:nestedScrollingEnabled="false"
+            android:scrollbars="vertical"
+            tools:listitem="@layout/list_element_contact" />
 
-    <me.chamada.ft_hangouts.RecyclerViewIndexedScroller
-        android:id="@+id/scroller"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        app:thumbWidth="12sp"
-        app:trackColor="@android:color/transparent"
-        app:layout_constraintTop_toBottomOf="@id/search_bar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/recyclerView"
-        app:layout_constraintEnd_toEndOf="parent"
-    />
+        <me.chamada.ft_hangouts.RecyclerViewIndexedScroller
+            android:id="@+id/scroller"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            app:thumbWidth="12sp"
+            app:trackColor="@android:color/transparent" />
+    </FrameLayout>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
