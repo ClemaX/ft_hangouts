@@ -13,7 +13,11 @@
 
         <action
             android:id="@+id/action_ListFragment_to_EditFragment"
-            app:destination="@id/EditFragment" />
+            app:destination="@id/EditFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/EditFragment"
@@ -23,6 +27,10 @@
 
         <action
             android:id="@+id/action_EditFragment_to_ListFragment"
-            app:destination="@id/ListFragment" />
+            app:destination="@id/ListFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
 </navigation>
