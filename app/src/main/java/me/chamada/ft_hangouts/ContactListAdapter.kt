@@ -23,6 +23,22 @@ open class ContactListAdapter(private val clickListener: OnContactClickListener?
     RecyclerViewIndexedScroller.IndexLabelListener {
     private var contactList: List<Contact>? = null
     private var contactFilter: Filter = ContactFilter()
+    private var searchQuery: CharSequence? = null
+
+    companion object {
+        fun filterContacts(contacts: List<Contact>, query: CharSequence?): List<Contact> {
+            return if (!query.isNullOrBlank()) {
+                val trimmedConstraint = query.trim()
+                contacts.filter { contact ->
+                    contact.name.contains(trimmedConstraint, ignoreCase = true)
+                            || contact.phoneNumber.contains(trimmedConstraint, ignoreCase = true)
+                }
+            }
+            else {
+                contacts
+            }
+        }
+    }
 
     class ContactViewHolder(itemView: View, private val clickListener: OnContactClickListener?) :
         RecyclerView.ViewHolder(itemView) {
@@ -99,22 +115,14 @@ open class ContactListAdapter(private val clickListener: OnContactClickListener?
 
     inner class ContactFilter : Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults? {
+            searchQuery = constraint
+
             val totalList = contactList
 
             if (totalList.isNullOrEmpty())
                 return null
 
-
-            val filteredList = if (!constraint.isNullOrEmpty()) {
-                val trimmedConstraint = constraint.trim()
-                totalList.filter { contact ->
-                    contact.name.contains(trimmedConstraint, ignoreCase = true)
-                    || contact.phoneNumber.contains(trimmedConstraint, ignoreCase = true)
-                }
-            }
-            else {
-                totalList
-            }
+            val filteredList = filterContacts(totalList, constraint)
 
             val results = FilterResults()
 
@@ -146,6 +154,10 @@ open class ContactListAdapter(private val clickListener: OnContactClickListener?
         contactList = list
 
         super.submitList(list)
+
+        searchQuery?.let {
+            filter.filter(searchQuery)
+        }
     }
 
     override fun getFilter(): Filter {
