@@ -153,7 +153,7 @@ open class ContactListAdapter(private val clickListener: OnContactClickListener?
     }
 
     override fun getIndexLabel(position: Int): String {
-        val contact = contactList?.get(position)?: return ""
+        val contact = getItem(position)?: return ""
         val name = contact.name.ifEmpty { contact.phoneNumber }
 
         return name[0].uppercase()
