@@ -25,7 +25,7 @@ class ListFragment : Fragment() {
         ContactViewModel.Factory(repository)
     }
 
-    inner class OnQueryTextListener(private val adapter: ContactListAdapter) :
+    class OnQueryTextListener(private val adapter: ContactListAdapter) :
         SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             return false
