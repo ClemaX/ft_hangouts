@@ -13,9 +13,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.abs
 
-fun interface OnContactClickListener {
-    fun onClick(contact: Contact, view: View?)
-}
 
 open class ContactListAdapter(private val clickListener: OnContactClickListener?) :
     ListAdapter<Contact, ContactListAdapter.ContactViewHolder>(ContactComparator()),
@@ -38,6 +35,10 @@ open class ContactListAdapter(private val clickListener: OnContactClickListener?
                 contacts
             }
         }
+    }
+
+    fun interface OnContactClickListener {
+        fun onClick(contact: Contact, view: View?)
     }
 
     class ContactViewHolder(itemView: View, private val clickListener: OnContactClickListener?) :

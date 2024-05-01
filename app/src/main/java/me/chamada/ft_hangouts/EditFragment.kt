@@ -9,9 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import me.chamada.ft_hangouts.databinding.FragmentContactEditBinding
 
-/**
- * A simple [Fragment] subclass as the second destination in the navigation.
- */
+
 class EditFragment : Fragment() {
     private var _contact: Contact? = null
     private var _binding: FragmentContactEditBinding? = null
@@ -34,8 +32,11 @@ class EditFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val repository = (requireContext().applicationContext as ContactApplication).repository
+
         val viewModel: ContactViewModel by activityViewModels {
-            ContactViewModelFactory((requireContext().applicationContext as ContactApplication).repository)
+            ContactViewModel.Factory(repository)
         }
 
         val navController = findNavController()

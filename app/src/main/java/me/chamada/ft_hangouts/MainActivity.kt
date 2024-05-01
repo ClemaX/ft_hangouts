@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private val viewModel: ContactViewModel by viewModels {
-        ContactViewModelFactory((applicationContext as ContactApplication).repository)
+        ContactViewModel.Factory((applicationContext as ContactApplication).repository)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

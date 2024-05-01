@@ -20,7 +20,9 @@ class ListFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: ContactViewModel by activityViewModels {
-        ContactViewModelFactory((requireContext().applicationContext as ContactApplication).repository)
+        val repository = (requireContext().applicationContext as ContactApplication).repository
+
+        ContactViewModel.Factory(repository)
     }
 
     inner class OnQueryTextListener(private val adapter: ContactListAdapter) :
