@@ -19,7 +19,8 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:contentDescription="@string/contact_name"
-            android:text="@string/name" />
+            android:text="@string/name"
+            android:textColor="@color/material_on_background_emphasis_medium" />
 
         <EditText
             android:id="@+id/editName"
@@ -28,11 +29,9 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:ems="10"
             android:hint="@string/name"
             android:importantForAutofill="no"
-            android:inputType="textPersonName"
-            android:minHeight="48dp" />
+            android:inputType="textPersonName" />
 
         <TextView
             android:id="@+id/labelPhoneNumber"
@@ -42,7 +41,8 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:contentDescription="@string/contact_phone_number"
-            android:text="@string/phone_number" />
+            android:text="@string/phone_number"
+            android:textColor="@color/material_on_background_emphasis_medium" />
 
         <EditText
             android:id="@+id/editPhoneNumber"
@@ -51,11 +51,9 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:ems="10"
             android:hint="@string/phone_number"
             android:importantForAutofill="no"
             android:inputType="text|phone"
-            android:minHeight="48dp"
             tools:ignore="TextContrastCheck" />
 
     </LinearLayout>

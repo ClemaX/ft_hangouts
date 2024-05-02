@@ -5,8 +5,18 @@ import kotlinx.coroutines.launch
 
 
 class ContactViewModel(private val repository: ContactRepository) : ViewModel() {
-    var all: LiveData<List<Contact>> = repository.all.asLiveData()
-    var current: Contact? = null
+    private val _currentId = MutableLiveData(0)
+    private val initialContact: LiveData<Contact> = MutableLiveData(Contact())
+
+    val all: LiveData<List<Contact>> = repository.all.asLiveData()
+    val currentId: LiveData<Int> get() = _currentId
+
+    val current: LiveData<Contact> = currentId.switchMap { id ->
+        when(id) {
+            0 -> initialContact
+            else -> repository.getById(id).asLiveData()
+        }
+    }
 
     companion object {
         private const val NAME_LENGTH_MIN = 5
@@ -34,7 +44,6 @@ class ContactViewModel(private val repository: ContactRepository) : ViewModel() 
                 *(1..3).map { random.nextInt(0, 10) * 10 + random.nextInt(0, 10) }.toIntArray())
             return "+" + parts.joinToString(" ")
         }
-
     }
 
     class Factory(private val repository: ContactRepository) :
@@ -47,6 +56,10 @@ class ContactViewModel(private val repository: ContactRepository) : ViewModel() 
 
             throw IllegalArgumentException("Unknown ViewModel class")
         }
+    }
+
+    fun select(contactId: Int) {
+        _currentId.postValue(contactId)
     }
 
     fun insert(contact: Contact) = viewModelScope.launch {

@@ -32,8 +32,7 @@ class ListFragment : Fragment(), MenuProvider {
         ContactViewModel.Factory(repository)
     }
 
-    private val adapter = ContactListAdapter { contact, _ -> editContact(contact) }
-
+    private val adapter = ContactListAdapter { contact, _ -> viewContact(contact.id) }
 
     private class OnQueryTextListener(private val adapter: ContactListAdapter) :
         SearchView.OnQueryTextListener {
@@ -59,9 +58,18 @@ class ListFragment : Fragment(), MenuProvider {
         }
     }
 
-    private fun editContact(contact: Contact? = null) {
-        viewModel.current = contact
-        findNavController().navigate(R.id.action_ListFragment_to_EditFragment)
+    private fun editContact(id: Int = 0) {
+        val action = ListFragmentDirections.actionListFragmentToEditFragment()
+
+        viewModel.select(id)
+        findNavController().navigate(action)
+    }
+
+    private fun viewContact(id: Int) {
+        val action = ListFragmentDirections.actionListFragmentToDetailsFragment()
+
+        viewModel.select(id)
+        findNavController().navigate(action)
     }
 
     override fun onCreateView(
@@ -86,6 +94,8 @@ class ListFragment : Fragment(), MenuProvider {
             scroller.setOnScrollChangeListener(scrollerChangeListener)
         }
 
+        viewModel.select(0)
+
         viewModel.all.observe(viewLifecycleOwner) { contacts ->
             contacts?.let {
                 adapter.submitList(contacts)
@@ -95,8 +105,8 @@ class ListFragment : Fragment(), MenuProvider {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onResume() {
+        super.onResume()
 
         fab.setImageResource(android.R.drawable.ic_input_add)
         fab.setOnClickListener { editContact() }
@@ -104,7 +114,6 @@ class ListFragment : Fragment(), MenuProvider {
     }
 
     override fun onStop() {
-        //fab.hide()
         fab.setOnClickListener(null)
         super.onStop()
     }
@@ -137,7 +146,9 @@ class ListFragment : Fragment(), MenuProvider {
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_settings -> {
-                findNavController().navigate(R.id.action_ListFragment_to_SettingsFragment)
+                val action = ListFragmentDirections.actionListFragmentToSettingsFragment()
+
+                findNavController().navigate(action)
 
                 true
             }

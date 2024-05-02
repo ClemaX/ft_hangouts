@@ -12,20 +12,14 @@ import me.chamada.ft_hangouts.databinding.FragmentContactEditBinding
 
 
 class EditFragment : Fragment() {
-    private var _contact: Contact? = null
+    private val viewModel: ContactViewModel by activityViewModels()
+
     private var _binding: FragmentContactEditBinding? = null
     private var _fab: FloatingActionButton? = null
 
     // These properties are only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
     private val fab get() = _fab!!
-    private var contact
-        get() = _contact!!
-        set(value) {
-            _contact = value
-        }
-
-    private val viewModel: ContactViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,7 +28,7 @@ class EditFragment : Fragment() {
         val activity = requireActivity()
 
         _binding = FragmentContactEditBinding.inflate(inflater, container, false)
-        _fab = activity.findViewById<FloatingActionButton>(R.id.fab)
+        _fab = activity.findViewById(R.id.fab)
 
         return binding.root
     }
@@ -42,36 +36,28 @@ class EditFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val navController = findNavController()
+        viewModel.current.observe(viewLifecycleOwner) { contact ->
+            binding.apply {
+                editName.setText(contact.name)
+                editPhoneNumber.setText(contact.phoneNumber)
+            }
+        }
+    }
 
-        _contact = viewModel.current ?: Contact()
+    override fun onResume() {
+        super.onResume()
 
         fab.setImageResource(R.drawable.baseline_save_24)
         fab.setOnClickListener {
             if (binding.editName.text.isNotBlank() || binding.editPhoneNumber.text.isNotBlank()) {
                 commit()
-                navController.navigateUp()
+                findNavController().navigateUp()
             }
             else {
                 binding.editName.error = getString(R.string.contact_blank_error)
             }
         }
         fab.show()
-
-        binding.apply {
-            editName.setText(contact.name)
-            editPhoneNumber.setText(contact.phoneNumber)
-        }
-
-
-        /*binding.buttonCancel.setOnClickListener {
-            navController.popBackStack()
-        }
-
-        binding.buttonDone.setOnClickListener {
-            commit()
-
-        }*/
     }
 
     override fun onStop() {
@@ -85,14 +71,17 @@ class EditFragment : Fragment() {
     }
 
     private fun commit() {
-        contact = contact.copy(
-            name = binding.editName.text.toString().trim(),
-            phoneNumber = binding.editPhoneNumber.text.toString().trim()
-        )
+        viewModel.current.value?.let {original ->
+            val contact = original.copy(
+                name = binding.editName.text.toString().trim(),
+                phoneNumber = binding.editPhoneNumber.text.toString().trim()
+            )
 
-        if (contact.id == 0)
-            viewModel.insert(contact)
-        else if (contact != viewModel.current)
-            viewModel.update(contact)
+            if (contact.id == 0)
+                viewModel.insert(contact)
+            else {
+                viewModel.update(contact)
+            }
+        }
     }
 }

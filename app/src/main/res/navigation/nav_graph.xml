@@ -12,8 +12,8 @@
         tools:layout="@layout/fragment_contact_list">
 
         <action
-            android:id="@+id/action_ListFragment_to_EditFragment"
-            app:destination="@id/EditFragment"
+            android:id="@+id/action_ListFragment_to_DetailsFragment"
+            app:destination="@id/DetailsFragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
@@ -22,6 +22,13 @@
             android:id="@+id/action_ListFragment_to_SettingsFragment"
             app:destination="@id/SettingsFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_ListFragment_to_EditFragment"
+            app:destination="@id/EditFragment"
+            app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
@@ -44,4 +51,17 @@
         android:id="@+id/SettingsFragment"
         android:name="me.chamada.ft_hangouts.SettingsFragment"
         android:label="@string/settings_fragment_label" />
+    <fragment
+        android:id="@+id/DetailsFragment"
+        android:name="me.chamada.ft_hangouts.DetailsFragment"
+        android:label="Contact Details"
+        tools:layout="@layout/fragment_contact_details">
+        <action
+            android:id="@+id/action_DetailsFragment_to_EditFragment"
+            app:destination="@id/EditFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
 </navigation>
