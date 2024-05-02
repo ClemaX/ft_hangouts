@@ -19,6 +19,8 @@ import me.chamada.ft_hangouts.databinding.FragmentContactListBinding
 
 
 class ListFragment : Fragment(), MenuProvider {
+    private var searchQuery: CharSequence? = null
+
     private var _binding: FragmentContactListBinding? = null
     private var _fab: FloatingActionButton? = null
 
@@ -34,13 +36,18 @@ class ListFragment : Fragment(), MenuProvider {
 
     private val adapter = ContactListAdapter { contact, _ -> viewContact(contact.id) }
 
-    private class OnQueryTextListener(private val adapter: ContactListAdapter) :
+    companion object {
+        const val KEY_SEARCH_QUERY = "searchQuery"
+    }
+
+    private inner class OnQueryTextListener() :
         SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             return false
         }
 
         override fun onQueryTextChange(newText: String?): Boolean {
+            searchQuery = newText
             adapter.filter.filter(newText)
 
             return false
@@ -78,10 +85,16 @@ class ListFragment : Fragment(), MenuProvider {
     ): View {
         val activity = requireActivity()
 
+        activity.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
+        searchQuery = savedInstanceState?.getCharSequence(KEY_SEARCH_QUERY)
+
         _binding = FragmentContactListBinding.inflate(inflater, container, false)
         _fab = activity.findViewById(R.id.fab)
 
-        activity.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
+        searchQuery?.let {
+            adapter.filter.filter(it)
+        }
 
         binding.apply {
             val scrollerChangeListener = ScrollerChangeListener(fab)
@@ -103,6 +116,11 @@ class ListFragment : Fragment(), MenuProvider {
         }
 
         return binding.root
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putCharSequence(KEY_SEARCH_QUERY, searchQuery)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onResume() {
@@ -133,7 +151,13 @@ class ListFragment : Fragment(), MenuProvider {
         val searchMenuItem = menu.findItem(R.id.action_search)
 
         (searchMenuItem.actionView as SearchView?)?.apply {
-            val queryListener = OnQueryTextListener(adapter)
+            searchQuery?.let {
+                isIconified = false
+                setQuery(it, false)
+            }
+
+
+            val queryListener = OnQueryTextListener()
 
             queryHint = resources.getString(R.string.search_contact)
             setOnQueryTextListener(queryListener)
