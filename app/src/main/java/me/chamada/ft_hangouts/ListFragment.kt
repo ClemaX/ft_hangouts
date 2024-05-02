@@ -112,6 +112,7 @@ class ListFragment : Fragment(), MenuProvider {
         viewModel.all.observe(viewLifecycleOwner) { contacts ->
             contacts?.let {
                 adapter.submitList(contacts)
+                binding.recyclerView.scheduleLayoutAnimation()
             }
         }
 
