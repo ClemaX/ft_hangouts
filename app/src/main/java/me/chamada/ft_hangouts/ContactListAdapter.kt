@@ -28,7 +28,7 @@ open class ContactListAdapter(private val clickListener: OnContactClickListener?
                 val trimmedConstraint = query.trim()
                 contacts.filter { contact ->
                     contact.name.contains(trimmedConstraint, ignoreCase = true)
-                            || contact.phoneNumber.contains(trimmedConstraint, ignoreCase = true)
+                        || contact.phoneNumber.contains(trimmedConstraint, ignoreCase = true)
                 }
             }
             else {
@@ -73,35 +73,44 @@ open class ContactListAdapter(private val clickListener: OnContactClickListener?
                             else -> acc
                         }
                     }
+                } else if (contact.phoneNumber.isNotBlank()) {
+                    contact.phoneNumber.substring(0, 1)
                 } else {
-                    contact.phoneNumber.slice(IntRange(0, 1))
+                    "?"
                 }
 
                 return initialsString
             }
         }
 
+        private fun getContactColor(contact: Contact): Int {
+            val name = contact.name.ifEmpty { contact.phoneNumber }
+
+            val accentHue = abs(name.hashCode() + contact.id * 64) % 360
+            val hsv = floatArrayOf(accentHue.toFloat(), 0.75f, 0.66f)
+
+            return Color.HSVToColor(hsv)
+        }
+
         fun bind(contact: Contact?) {
             if (contact != null) {
-                val name = contact.name.ifEmpty { contact.phoneNumber }
+                val contactColor = getContactColor(contact)
+                val initials = getInitials(contact)
 
-                contactNameView.text = name
+                contactInitialsBackground.drawable.mutate().setTint(contactColor)
+                contactInitialsTextView.text = initials
+
+                contactNameView.text = contact.name
                 contactPhoneNumberView.text = contact.phoneNumber
-                contactInitialsTextView.text = getInitials(contact)
-
-                val accentHue = abs(name.hashCode() + contact.id * 64) % 360
-
-                val hsv = floatArrayOf(accentHue.toFloat(), 0.75f, 0.66f)
-
-                contactInitialsBackground.drawable.mutate().setTint(Color.HSVToColor(hsv))
 
                 if (clickListener != null)
+                {
                     itemView.setOnClickListener {
                         clickListener.onClick(contact, itemView)
                     }
+                }
             }
         }
-
     }
 
     class ContactComparator : DiffUtil.ItemCallback<Contact>() {
@@ -167,7 +176,7 @@ open class ContactListAdapter(private val clickListener: OnContactClickListener?
 
     override fun getIndexLabel(position: Int): String {
         val contact = getItem(position)?: return ""
-        val name = contact.name.ifEmpty { contact.phoneNumber }
+        val name = contact.name.ifBlank { contact.phoneNumber.ifBlank { "?" } }
 
         return name[0].uppercase()
     }

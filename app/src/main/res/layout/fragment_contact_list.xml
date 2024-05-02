@@ -11,9 +11,9 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:nestedScrollingEnabled="false"
         android:scrollbars="vertical"
-        tools:listitem="@layout/list_element_contact" />
+        tools:listitem="@layout/list_element_contact"
+        />
 
     <me.chamada.ft_hangouts.RecyclerViewIndexedScroller
         android:id="@+id/scroller"
@@ -25,16 +25,4 @@
         app:thumbColor="@android:color/transparent"
         app:thumbPressedColor="@android:color/transparent" />
 
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:contentDescription="@string/action_add_contact"
-        app:srcCompat="@android:drawable/ic_input_add" />
-
 </FrameLayout>
-
-

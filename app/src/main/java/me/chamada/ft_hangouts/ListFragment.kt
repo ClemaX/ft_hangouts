@@ -1,6 +1,5 @@
 package me.chamada.ft_hangouts
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -21,9 +20,11 @@ import me.chamada.ft_hangouts.databinding.FragmentContactListBinding
 
 class ListFragment : Fragment(), MenuProvider {
     private var _binding: FragmentContactListBinding? = null
+    private var _fab: FloatingActionButton? = null
 
-    // This property is only valid between onCreateView and onDestroyView.
+    // These properties are only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
+    private val fab get() = _fab!!
 
     private val viewModel: ContactViewModel by activityViewModels {
         val repository = (requireContext().applicationContext as ContactApplication).repository
@@ -32,6 +33,7 @@ class ListFragment : Fragment(), MenuProvider {
     }
 
     private val adapter = ContactListAdapter { contact, _ -> editContact(contact) }
+
 
     private class OnQueryTextListener(private val adapter: ContactListAdapter) :
         SearchView.OnQueryTextListener {
@@ -62,14 +64,14 @@ class ListFragment : Fragment(), MenuProvider {
         findNavController().navigate(R.id.action_ListFragment_to_EditFragment)
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentContactListBinding.inflate(inflater, container, false)
-
         val activity = requireActivity()
+
+        _binding = FragmentContactListBinding.inflate(inflater, container, false)
+        _fab = activity.findViewById(R.id.fab)
 
         activity.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
@@ -94,12 +96,24 @@ class ListFragment : Fragment(), MenuProvider {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.fab.setOnClickListener { editContact() }
+        super.onViewCreated(view, savedInstanceState)
+
+        fab.setImageResource(android.R.drawable.ic_input_add)
+        fab.setOnClickListener { editContact() }
+        fab.show()
+    }
+
+    override fun onStop() {
+        //fab.hide()
+        fab.setOnClickListener(null)
+        super.onStop()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+
         _binding = null
+        _fab = null
     }
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -123,6 +137,8 @@ class ListFragment : Fragment(), MenuProvider {
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_settings -> {
+                findNavController().navigate(R.id.action_ListFragment_to_SettingsFragment)
+
                 true
             }
             R.id.action_pre_seed -> {

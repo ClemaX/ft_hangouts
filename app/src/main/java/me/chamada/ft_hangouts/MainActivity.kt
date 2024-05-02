@@ -12,6 +12,7 @@ import me.chamada.ft_hangouts.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private lateinit var repository: ContactRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,14 +20,19 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //setSupportActionBar(binding.toolbar)
+        setSupportActionBar(binding.toolbar)
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
         val navController = navHostFragment.navController
 
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        repository = (applicationContext as ContactApplication).repository
     }
+
+    override val defaultViewModelProviderFactory: ContactViewModel.Factory
+        get() = ContactViewModel.Factory(repository)
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)

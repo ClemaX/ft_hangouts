@@ -2,5 +2,11 @@
     <!-- Base application theme. -->
     <style name="Theme.Ft_hangouts" parent="Theme.Material3.DynamicColors.DayNight">
         <item name="android:statusBarColor">@color/black</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
+<!--
+    <style name="Theme.Ft_hangouts.RedActionBar" parent="Theme.Ft_hangouts">
+    </style>-->
 </resources>

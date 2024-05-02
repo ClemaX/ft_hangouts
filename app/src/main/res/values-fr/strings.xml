@@ -16,4 +16,8 @@
     <string name="contact_avatar">Photo de Profile</string>
     <string name="search_contact">Chercher un contact</string>
     <string name="action_search">Rechercher</string>
+    <string name="style_header">Style</string>
+    <string name="appbar_color_title">Couleur de l\'AppBar</string>
+    <string name="settings_fragment_label">Paramètres</string>
+    <string name="contact_blank_error">Les informations du contact ne peuvent pas être vides!</string>
 </resources>

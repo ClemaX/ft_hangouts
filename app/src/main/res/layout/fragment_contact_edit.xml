@@ -1,101 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".EditFragment">
-
-    <ScrollView
-        android:id="@+id/scrollView3"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/labelName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:contentDescription="@string/contact_name"
-                android:text="@string/name" />
-
-            <EditText
-                android:id="@+id/editName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:ems="10"
-                android:hint="@string/name"
-                android:importantForAutofill="no"
-                android:inputType="textPersonName"
-                android:minHeight="48dp" />
-
-            <TextView
-                android:id="@+id/labelPhoneNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:contentDescription="@string/contact_phone_number"
-                android:text="@string/phone_number" />
-
-            <EditText
-                android:id="@+id/editPhoneNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:ems="10"
-                android:hint="@string/phone_number"
-                android:importantForAutofill="no"
-                android:inputType="text|phone"
-                android:minHeight="48dp"
-                tools:ignore="TextContrastCheck" />
-
-        </LinearLayout>
-    </ScrollView>
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:gravity="bottom"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/buttonCancel"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/labelName"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@android:string/cancel" />
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="@string/contact_name"
+            android:text="@string/name" />
 
-        <Button
-            android:id="@+id/buttonDone"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="0dp"
+        <EditText
+            android:id="@+id/editName"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/done" />
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:ems="10"
+            android:hint="@string/name"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:minHeight="48dp" />
+
+        <TextView
+            android:id="@+id/labelPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="@string/contact_phone_number"
+            android:text="@string/phone_number" />
+
+        <EditText
+            android:id="@+id/editPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:ems="10"
+            android:hint="@string/phone_number"
+            android:importantForAutofill="no"
+            android:inputType="text|phone"
+            android:minHeight="48dp"
+            tools:ignore="TextContrastCheck" />
+
     </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

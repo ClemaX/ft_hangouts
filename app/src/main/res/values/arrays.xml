@@ -1,0 +1,10 @@
+<resources>
+    <!-- Reply Preference -->
+    <string-array name="appbar_color_entries">
+        <item>MaterialYou</item>
+    </string-array>
+
+    <string-array name="appbar_color_values">
+        <item>material_you</item>
+    </string-array>
+</resources>

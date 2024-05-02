@@ -18,4 +18,11 @@
     <string name="contact_avatar">Avatar</string>
     <string name="search_contact">Search contact</string>
     <string name="action_search">Search</string>
+    <!-- Preference Titles -->
+    <string name="style_header">Style</string>
+
+    <!-- Style Preferences -->
+    <string name="appbar_color_title">AppBar Color</string>
+    <string name="settings_fragment_label">Settings</string>
+    <string name="contact_blank_error">Contact info cannot be blank!</string>
 </resources>
