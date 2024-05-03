@@ -3,14 +3,11 @@
     <string name="action_settings">Paramètres</string>
     <string name="list_fragment_label">Contacts</string>
     <string name="edit_fragment_label">Éditer Contact</string>
-    <string name="next">Prochain</string>
-    <string name="previous">Précédent</string>
     <string name="action_add_contact">Ajouter Contact</string>
     <string name="name">Nom</string>
     <string name="contact_name">Nom du Contact</string>
     <string name="phone_number">Numéro de Téléphone</string>
     <string name="contact_phone_number">Numéro de Téléphone du Contact</string>
-    <string name="done">Enregistrer</string>
     <string name="action_pre_seed">Prégénérer</string>
     <string name="action_clear">Vider</string>
     <string name="contact_avatar">Photo de Profile</string>

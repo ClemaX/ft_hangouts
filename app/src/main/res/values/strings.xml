@@ -6,13 +6,10 @@
     <!-- Strings used for fragments for navigation -->
     <string name="list_fragment_label">Contacts</string>
     <string name="edit_fragment_label">Edit Contact</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
     <string name="name">Name</string>
     <string name="contact_name">Contact Name</string>
     <string name="phone_number">Phone Number</string>
     <string name="contact_phone_number">Contact Phone Number</string>
-    <string name="done">Done</string>
     <string name="action_pre_seed">Pre-seed</string>
     <string name="action_clear">Clear</string>
     <string name="contact_avatar">Avatar</string>
