@@ -47,7 +47,7 @@ class EditFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        fab.setImageResource(R.drawable.baseline_save_24)
+        fab.setImageResource(R.drawable.ic_action_save)
         fab.setOnClickListener {
             if (binding.editName.text.isNotBlank() || binding.editPhoneNumber.text.isNotBlank()) {
                 commit()

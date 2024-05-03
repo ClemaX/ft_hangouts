@@ -43,7 +43,7 @@ class DetailsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        fab.setImageResource(R.drawable.baseline_edit_24)
+        fab.setImageResource(R.drawable.ic_action_edit)
         fab.setOnClickListener {
             editContact()
         }
