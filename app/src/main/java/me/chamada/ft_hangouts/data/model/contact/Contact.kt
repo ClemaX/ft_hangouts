@@ -1,4 +1,4 @@
-package me.chamada.ft_hangouts
+package me.chamada.ft_hangouts.data.model.contact
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

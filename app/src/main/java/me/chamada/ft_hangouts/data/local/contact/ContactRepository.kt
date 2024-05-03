@@ -1,7 +1,8 @@
-package me.chamada.ft_hangouts
+package me.chamada.ft_hangouts.data.local.contact
 
 import androidx.annotation.WorkerThread
 import kotlinx.coroutines.flow.Flow
+import me.chamada.ft_hangouts.data.model.contact.Contact
 
 class ContactRepository(private val dao: ContactDAO) {
     val all: Flow<List<Contact>> = dao.getAll()

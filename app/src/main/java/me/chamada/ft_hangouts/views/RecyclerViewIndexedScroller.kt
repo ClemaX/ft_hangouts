@@ -1,4 +1,4 @@
-package me.chamada.ft_hangouts
+package me.chamada.ft_hangouts.views
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.R.*
 import com.google.android.material.color.MaterialColors
+import me.chamada.ft_hangouts.R
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt

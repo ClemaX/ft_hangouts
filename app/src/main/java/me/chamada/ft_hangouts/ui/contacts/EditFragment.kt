@@ -1,4 +1,4 @@
-package me.chamada.ft_hangouts
+package me.chamada.ft_hangouts.ui.contacts
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import me.chamada.ft_hangouts.R
 import me.chamada.ft_hangouts.databinding.FragmentContactEditBinding
 
 

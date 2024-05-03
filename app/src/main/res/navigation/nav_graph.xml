@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/ListFragment"
-        android:name="me.chamada.ft_hangouts.ListFragment"
+        android:name="me.chamada.ft_hangouts.ui.contacts.ListFragment"
         android:label="@string/list_fragment_label"
         tools:layout="@layout/fragment_contact_list">
 
@@ -35,7 +35,7 @@
     </fragment>
     <fragment
         android:id="@+id/EditFragment"
-        android:name="me.chamada.ft_hangouts.EditFragment"
+        android:name="me.chamada.ft_hangouts.ui.contacts.EditFragment"
         android:label="@string/edit_fragment_label"
         tools:layout="@layout/fragment_contact_edit">
 
@@ -49,11 +49,11 @@
     </fragment>
     <fragment
         android:id="@+id/SettingsFragment"
-        android:name="me.chamada.ft_hangouts.SettingsFragment"
+        android:name="me.chamada.ft_hangouts.ui.contacts.SettingsFragment"
         android:label="@string/settings_fragment_label" />
     <fragment
         android:id="@+id/DetailsFragment"
-        android:name="me.chamada.ft_hangouts.DetailsFragment"
+        android:name="me.chamada.ft_hangouts.ui.contacts.DetailsFragment"
         android:label="Contact Details"
         tools:layout="@layout/fragment_contact_details">
         <action

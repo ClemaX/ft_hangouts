@@ -14,11 +14,13 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.preference.PreferenceManager
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.DynamicColorsOptions
+import me.chamada.ft_hangouts.data.local.contact.ContactRepository
+import me.chamada.ft_hangouts.ui.contacts.ContactViewModel
 import me.chamada.ft_hangouts.databinding.ActivityMainBinding
 import java.text.DateFormat
 import java.util.Date
 
-class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
+class ContactActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var repository: ContactRepository

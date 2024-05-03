@@ -1,4 +1,4 @@
-package me.chamada.ft_hangouts
+package me.chamada.ft_hangouts.ui.contacts
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,6 +17,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import me.chamada.ft_hangouts.ContactApplication
+import me.chamada.ft_hangouts.R
+import me.chamada.ft_hangouts.adapters.ContactListAdapter
+import me.chamada.ft_hangouts.views.RecyclerViewIndexedScroller
 import me.chamada.ft_hangouts.databinding.FragmentContactListBinding
 
 

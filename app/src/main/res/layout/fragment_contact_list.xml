@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ListFragment"
+    tools:context=".ui.contacts.ListFragment"
     >
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -17,7 +17,7 @@
         tools:layoutAnimation="@anim/noop_layout"
         />
 
-    <me.chamada.ft_hangouts.RecyclerViewIndexedScroller
+    <me.chamada.ft_hangouts.views.RecyclerViewIndexedScroller
         android:id="@+id/scroller"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

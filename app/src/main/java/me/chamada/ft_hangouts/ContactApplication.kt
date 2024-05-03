@@ -7,6 +7,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
+import me.chamada.ft_hangouts.data.local.contact.ContactRepository
+import me.chamada.ft_hangouts.data.local.contact.ContactRoomDatabase
 
 class ContactApplication : Application() {
     private val applicationScope = CoroutineScope(SupervisorJob())

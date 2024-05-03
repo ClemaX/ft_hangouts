@@ -1,9 +1,10 @@
-package me.chamada.ft_hangouts
+package me.chamada.ft_hangouts.ui.contacts
 
 import android.os.Bundle
 import android.view.View
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import me.chamada.ft_hangouts.R
 
 class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

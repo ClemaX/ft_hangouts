@@ -1,4 +1,4 @@
-package me.chamada.ft_hangouts
+package me.chamada.ft_hangouts.adapters
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -11,6 +11,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import me.chamada.ft_hangouts.R
+import me.chamada.ft_hangouts.views.RecyclerViewIndexedScroller
+import me.chamada.ft_hangouts.data.model.contact.Contact
 import kotlin.math.abs
 
 

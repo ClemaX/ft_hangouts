@@ -1,7 +1,8 @@
-package me.chamada.ft_hangouts
+package me.chamada.ft_hangouts.data.local.contact
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
+import me.chamada.ft_hangouts.data.model.contact.Contact
 
 @Dao
 interface ContactDAO {

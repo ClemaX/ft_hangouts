@@ -1,7 +1,9 @@
-package me.chamada.ft_hangouts
+package me.chamada.ft_hangouts.ui.contacts
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
+import me.chamada.ft_hangouts.data.local.contact.ContactRepository
+import me.chamada.ft_hangouts.data.model.contact.Contact
 
 
 class ContactViewModel(private val repository: ContactRepository) : ViewModel() {
