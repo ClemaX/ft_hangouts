@@ -25,4 +25,11 @@
     <string name="appbar_color_title">AppBar Color</string>
     <string name="settings_fragment_label">Settings</string>
     <string name="contact_blank_error">Contact info cannot be blank!</string>
+    <string name="theme_material_you" translatable="false">MaterialYou</string>
+    <string name="theme_red">Red</string>
+    <string name="theme_blue">Blue</string>
+    <string name="theme_fuchsia">Fuchsia</string>
+    <string name="theme_olive">Olive</string>
+    <string name="theme_silver">Silver</string>
+    <string name="theme_teal">Teal</string>
 </resources>

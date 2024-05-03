@@ -1,10 +1,23 @@
 <resources>
     <!-- Reply Preference -->
     <string-array name="appbar_color_entries">
-        <item>MaterialYou</item>
+        <item>@string/theme_material_you</item>
+        <item>@string/theme_red</item>
+        <item>@string/theme_blue</item>
+        <item>@string/theme_fuchsia</item>
+        <item>@string/theme_olive</item>
+        <item>@string/theme_silver</item>
+        <item>@string/theme_teal</item>
     </string-array>
 
     <string-array name="appbar_color_values">
         <item>material_you</item>
+        <item>red</item>
+        <item>blue</item>
+        <item>fuchsia</item>
+        <item>olive</item>
+        <item>silver</item>
+        <item>teal</item>
+        <!--aqua, fuchsia, lime, maroon, navy, olive, purple, silver, teal-->
     </string-array>
 </resources>

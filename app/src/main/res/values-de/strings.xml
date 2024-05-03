@@ -20,4 +20,10 @@
     <string name="appbar_color_title">AppBar-Farbe</string>
     <string name="settings_fragment_label">Einstellungen</string>
     <string name="contact_blank_error">Kontaktdaten können nicht leer sein!</string>
+    <string name="theme_red">Rot</string>
+    <string name="theme_blue">Blau</string>
+    <string name="theme_fuchsia">Fuchsia</string>
+    <string name="theme_olive">Olive</string>
+    <string name="theme_silver">Silber</string>
+    <string name="theme_teal">Aquamarin</string>
 </resources>
