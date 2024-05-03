@@ -8,12 +8,14 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import me.chamada.ft_hangouts.databinding.FragmentContactListBinding
 
@@ -23,10 +25,12 @@ class ListFragment : Fragment(), MenuProvider {
 
     private var _binding: FragmentContactListBinding? = null
     private var _fab: FloatingActionButton? = null
+    private var _appBarLayout: AppBarLayout? = null
 
     // These properties are only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
     private val fab get() = _fab!!
+    private val appBarLayout get() = _appBarLayout!!
 
     private val viewModel: ContactViewModel by activityViewModels {
         val repository = (requireContext().applicationContext as ContactApplication).repository
@@ -40,7 +44,7 @@ class ListFragment : Fragment(), MenuProvider {
         const val KEY_SEARCH_QUERY = "searchQuery"
     }
 
-    private inner class OnQueryTextListener() :
+    private inner class OnQueryTextListener :
         SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             return false
@@ -54,13 +58,30 @@ class ListFragment : Fragment(), MenuProvider {
         }
     }
 
-    private class ScrollerChangeListener(private val fab: FloatingActionButton):
-        RecyclerViewIndexedScroller.OnScrollChangeListener() {
+    private class ScrollerChangeListener(
+            private val appBarLayout: AppBarLayout,
+            private val fab: FloatingActionButton
+    ): RecyclerViewIndexedScroller.OnScrollChangeListener() {
+        private var appBarWasExpanded: Boolean = true
+
         override fun onScrollStart() {
+            val layoutParams = appBarLayout.layoutParams as CoordinatorLayout.LayoutParams
+
+            if (layoutParams.behavior is AppBarLayout.Behavior) {
+                val appBarBehavior = layoutParams.behavior as AppBarLayout.Behavior
+                appBarWasExpanded = appBarBehavior.topAndBottomOffset == 0
+            }
+
+            if (appBarWasExpanded) {
+                appBarLayout.setExpanded(false)
+            }
             fab.hide()
         }
 
         override fun onScrollEnd() {
+            if (appBarWasExpanded) {
+                appBarLayout.setExpanded(true)
+            }
             fab.show()
         }
     }
@@ -96,8 +117,10 @@ class ListFragment : Fragment(), MenuProvider {
             adapter.filter.filter(it)
         }
 
+        _appBarLayout = activity.findViewById(R.id.appbar_layout)
+
         binding.apply {
-            val scrollerChangeListener = ScrollerChangeListener(fab)
+            val scrollerChangeListener = ScrollerChangeListener(appBarLayout, fab)
 
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(requireContext())

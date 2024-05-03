@@ -19,7 +19,7 @@
             android:background="?attr/colorPrimary"
             android:theme="@style/ThemeOverlay.Ft_hangouts.ActionBar"
             app:popupTheme="@style/ThemeOverlay.Ft_hangouts.ActionBar.Popup"
-            app:layout_scrollFlags="scroll|enterAlways"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
             tools:menu="@menu/menu_main"
             />
 
@@ -27,7 +27,7 @@
 
     <include layout="@layout/content_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

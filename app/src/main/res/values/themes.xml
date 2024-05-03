@@ -10,6 +10,7 @@
     <!-- ActionBar theme overlay -->
     <style name="ThemeOverlay.Ft_hangouts.ActionBar" parent="ThemeOverlay.AppCompat.DayNight.ActionBar">
         <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
+        <item name="colorAccent">?attr/colorAccent</item>
         <item name="searchViewStyle">@style/Widget.Ft_hangouts.SearchView.ActionBar</item>
         <item name="autoCompleteTextViewStyle">@style/Widget.Ft_hangouts.AutoCompleteTextView.SearchView</item>
     </style>
@@ -20,7 +21,6 @@
 
     <!-- ActionBar SearchView Widget style -->
     <style name="Widget.Ft_hangouts.SearchView.ActionBar" parent="Widget.AppCompat.SearchView.ActionBar">
-        <item name="android:textColor">#f00</item>
     </style>
 
     <!-- ActionBar AutoCompleteTextView Widget theme style -->
