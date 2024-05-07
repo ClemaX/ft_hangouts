@@ -1,6 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.coreVersion = '1.13.0'
+    ext.coreVersion = '1.13.1'
     ext.appCompatVersion = '1.6.1'
 
     // Room components
@@ -8,7 +8,7 @@ buildscript {
     ext.lifecycleVersion = '2.7.0'
 
     // UI
-    ext.materialVersion = '1.11.0'
+    ext.materialVersion = '1.12.0'
     ext.constraintLayoutVersion = '2.1.4'
     ext.navigationVersion = '2.7.7'
     ext.preferenceVersion = '1.2.1'
