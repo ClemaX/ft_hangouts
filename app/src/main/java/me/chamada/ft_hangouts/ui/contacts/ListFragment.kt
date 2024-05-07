@@ -28,9 +28,11 @@ import me.chamada.ft_hangouts.adapters.ContactListAdapter
 import me.chamada.ft_hangouts.databinding.FragmentContactListBinding
 import me.chamada.ft_hangouts.views.RecyclerViewIndexedScroller
 
-class ListFragment : Fragment(), MenuProvider {
+class ListFragment : Fragment(), MenuProvider, DeleteDialogFragment.OnConfirmListener {
     private var searchQuery: CharSequence? = null
     private var hasSelection: Boolean = false
+
+    private val deleteDialogFragment = DeleteDialogFragment(this)
 
     private var _binding: FragmentContactListBinding? = null
     private var _actionBar: ActionBar? = null
@@ -114,7 +116,7 @@ class ListFragment : Fragment(), MenuProvider {
     private class ScrollerChangeListener(
             private val appBarLayout: AppBarLayout,
             private val fab: FloatingActionButton
-    ): RecyclerViewIndexedScroller.OnScrollChangeListener() {
+    ): RecyclerViewIndexedScroller.OnScrollChangeListener {
         private var appBarWasExpanded: Boolean = true
 
         override fun onScrollStart() {
@@ -223,6 +225,7 @@ class ListFragment : Fragment(), MenuProvider {
 
     override fun onStop() {
         fab.setOnClickListener(null)
+
         super.onStop()
     }
 
@@ -294,7 +297,8 @@ class ListFragment : Fragment(), MenuProvider {
             }
             true -> when (item.itemId) {
                 R.id.action_selection_delete -> {
-                    adapter.tracker?.selection?.forEach { id -> viewModel.delete(id.toInt()) }
+                    deleteDialogFragment
+                        .show(requireActivity().supportFragmentManager, "DELETE_CONTACTS_DIALOG")
 
                     true
                 }
@@ -306,5 +310,9 @@ class ListFragment : Fragment(), MenuProvider {
                 else -> false
             }
         }
+    }
+
+    override fun onConfirmDelete() {
+        adapter.tracker?.selection?.forEach { id -> viewModel.delete(id.toInt()) }
     }
 }

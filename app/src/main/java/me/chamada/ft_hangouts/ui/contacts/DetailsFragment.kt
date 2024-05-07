@@ -2,17 +2,25 @@ package me.chamada.ft_hangouts.ui.contacts
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import me.chamada.ft_hangouts.R
 import me.chamada.ft_hangouts.databinding.FragmentContactDetailsBinding
 
-class DetailsFragment : Fragment() {
+class DetailsFragment : Fragment(), MenuProvider, DeleteDialogFragment.OnConfirmListener {
     private val viewModel: ContactViewModel by activityViewModels()
+    private var contactId: Int? = null
+
+    private val deleteDialogFragment = DeleteDialogFragment(this)
 
     private var _binding: FragmentContactDetailsBinding? = null
     private var _fab: FloatingActionButton? = null
@@ -28,10 +36,14 @@ class DetailsFragment : Fragment() {
     ): View {
         val activity = requireActivity()
 
+        activity.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
         _binding = FragmentContactDetailsBinding.inflate(inflater, container, false)
         _fab = activity.findViewById(R.id.fab)
 
         viewModel.current.observe(viewLifecycleOwner) { contact ->
+            contactId = contact.id
+
             binding.apply {
                 name.text = contact.name
                 phoneNumber.text = contact.phoneNumber
@@ -53,6 +65,7 @@ class DetailsFragment : Fragment() {
 
     override fun onStop() {
         fab.setOnClickListener(null)
+
         super.onStop()
     }
 
@@ -60,5 +73,29 @@ class DetailsFragment : Fragment() {
         val action = DetailsFragmentDirections.actionDetailsFragmentToEditFragment()
 
         findNavController().navigate(action)
+    }
+
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.menu_contact_details, menu)
+    }
+
+    override fun onMenuItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            R.id.action_delete -> {
+                deleteDialogFragment
+                    .show(requireActivity().supportFragmentManager, "DELETE_CONTACT_DIALOG")
+
+                true
+            }
+            else -> false
+        }
+    }
+
+    override fun onConfirmDelete() {
+        contactId?.let {
+            findNavController().navigateUp()
+            viewModel.select(0)
+            viewModel.delete(it)
+        }
     }
 }

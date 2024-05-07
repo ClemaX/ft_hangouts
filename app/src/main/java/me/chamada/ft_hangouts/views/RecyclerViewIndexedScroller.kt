@@ -50,9 +50,9 @@ class RecyclerViewIndexedScroller(context: Context, attrs: AttributeSet) : View(
         }
     }
 
-    abstract class OnScrollChangeListener {
-        abstract fun onScrollStart()
-        abstract fun onScrollEnd()
+    interface OnScrollChangeListener {
+        fun onScrollStart()
+        fun onScrollEnd()
     }
 
     companion object {

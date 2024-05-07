@@ -24,4 +24,7 @@
     <string name="theme_silver">Silber</string>
     <string name="theme_teal">Aquamarin</string>
     <string name="action_delete">Löschen</string>
+    <string name="prompt_confirm_delete">Sind Sie sich sicher, dass Sie mit dem Löschvorgang fortfahren möchten?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
 </resources>

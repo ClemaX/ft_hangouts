@@ -24,4 +24,7 @@
     <string name="theme_silver">Argent</string>
     <string name="theme_teal">Sarcelle</string>
     <string name="action_delete">Supprimer</string>
+    <string name="prompt_confirm_delete">Êtes-vous sur de vouloir procéder à la supression?</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
 </resources>

@@ -2,8 +2,6 @@
     <string name="app_name" translatable="false">ft_hangouts</string>
     <string name="action_settings">Settings</string>
     <string name="action_add_contact">Add Contact</string>
-
-    <!-- Strings used for fragments for navigation -->
     <string name="list_fragment_label">Contacts</string>
     <string name="edit_fragment_label">Edit Contact</string>
     <string name="name">Name</string>
@@ -15,10 +13,7 @@
     <string name="contact_avatar">Avatar</string>
     <string name="search_contact">Search contact</string>
     <string name="action_search">Search</string>
-    <!-- Preference Titles -->
     <string name="style_header">Style</string>
-
-    <!-- Style Preferences -->
     <string name="appbar_color_title">AppBar Color</string>
     <string name="settings_fragment_label">Settings</string>
     <string name="contact_blank_error">Contact info cannot be blank!</string>
@@ -30,4 +25,7 @@
     <string name="theme_silver">Silver</string>
     <string name="theme_teal">Teal</string>
     <string name="action_delete">Delete</string>
+    <string name="prompt_confirm_delete">Are you sure you want to proceed with the deletion?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>
