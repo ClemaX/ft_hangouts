@@ -7,6 +7,8 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.MenuProvider
@@ -14,25 +16,30 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.selection.SelectionPredicates
+import androidx.recyclerview.selection.SelectionTracker
+import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import me.chamada.ft_hangouts.ContactApplication
 import me.chamada.ft_hangouts.R
 import me.chamada.ft_hangouts.adapters.ContactListAdapter
-import me.chamada.ft_hangouts.views.RecyclerViewIndexedScroller
 import me.chamada.ft_hangouts.databinding.FragmentContactListBinding
-
+import me.chamada.ft_hangouts.views.RecyclerViewIndexedScroller
 
 class ListFragment : Fragment(), MenuProvider {
     private var searchQuery: CharSequence? = null
+    private var hasSelection: Boolean = false
 
     private var _binding: FragmentContactListBinding? = null
+    private var _actionBar: ActionBar? = null
     private var _fab: FloatingActionButton? = null
     private var _appBarLayout: AppBarLayout? = null
 
     // These properties are only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
+    private val actionBar get() = _actionBar!!
     private val fab get() = _fab!!
     private val appBarLayout get() = _appBarLayout!!
 
@@ -59,6 +66,48 @@ class ListFragment : Fragment(), MenuProvider {
             adapter.filter.filter(newText)
 
             return false
+        }
+    }
+
+    private inner class SelectionObserver:
+        SelectionTracker.SelectionObserver<Long>() {
+        private var origToolbarTitle: CharSequence? = null
+        private var hadSelection = false
+        private var previousSelectedItemCount = 0
+
+        private fun onSelectionCountChanged(selectedItemCount: Int) {
+            if (selectedItemCount != 0) {
+                if (previousSelectedItemCount == 0) {
+                    origToolbarTitle = actionBar.title
+                }
+                actionBar.title = "$selectedItemCount / ${adapter.itemCount}"
+            }
+            else {
+                actionBar.title = origToolbarTitle
+            }
+        }
+
+        private fun onSelectionStateChanged(hasSelection: Boolean) {
+            if (hasSelection) fab.hide() else fab.show()
+
+            activity?.invalidateMenu()
+        }
+
+        override fun onSelectionChanged() {
+            val selectedItemCount = adapter.tracker?.selection?.size()?: 0
+
+            hasSelection = selectedItemCount != 0
+
+            if (selectedItemCount != previousSelectedItemCount) {
+                onSelectionCountChanged(selectedItemCount)
+                previousSelectedItemCount = selectedItemCount
+            }
+
+            if (hasSelection != hadSelection) {
+                onSelectionStateChanged(hasSelection)
+
+                hadSelection = hasSelection
+            }
         }
     }
 
@@ -108,7 +157,7 @@ class ListFragment : Fragment(), MenuProvider {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val activity = requireActivity()
+        val activity = requireActivity() as AppCompatActivity
 
         activity.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
@@ -116,18 +165,29 @@ class ListFragment : Fragment(), MenuProvider {
 
         _binding = FragmentContactListBinding.inflate(inflater, container, false)
         _fab = activity.findViewById(R.id.fab)
+        _actionBar = activity.supportActionBar
+
+        _appBarLayout = activity.findViewById(R.id.appbar_layout)
 
         searchQuery?.let {
             adapter.filter.filter(it)
         }
-
-        _appBarLayout = activity.findViewById(R.id.appbar_layout)
 
         binding.apply {
             val scrollerChangeListener = ScrollerChangeListener(appBarLayout, fab)
 
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+            adapter.tracker = SelectionTracker.Builder(
+                    "selection",
+                    recyclerView,
+                    ContactListAdapter.ContactItemKeyProvider(adapter),
+                    ContactListAdapter.ContactDetailsProvider(recyclerView),
+                    StorageStrategy.createLongStorage()
+                )
+                .withSelectionPredicate(SelectionPredicates.createSelectAnything())
+                .build()
 
             scroller.recyclerView = recyclerView
 
@@ -142,6 +202,8 @@ class ListFragment : Fragment(), MenuProvider {
                 binding.recyclerView.scheduleLayoutAnimation()
             }
         }
+
+        adapter.tracker?.addObserver(SelectionObserver())
 
         return binding.root
     }
@@ -172,23 +234,36 @@ class ListFragment : Fragment(), MenuProvider {
     }
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-
-        val searchMenuItem = menu.findItem(R.id.action_search)
-
-        (searchMenuItem.actionView as SearchView?)?.apply {
-            searchQuery?.let {
-                isIconified = false
-                setQuery(it, false)
+        if (!hasSelection) {
+            actionBar.apply {
+                setDisplayShowHomeEnabled(false)
+                setDisplayHomeAsUpEnabled(false)
             }
 
+            menuInflater.inflate(R.menu.menu_contact_list, menu)
 
-            val queryListener = OnQueryTextListener()
+            val searchMenuItem = menu.findItem(R.id.action_search)
 
-            queryHint = resources.getString(R.string.search_contact)
-            setOnQueryTextListener(queryListener)
+            (searchMenuItem.actionView as SearchView?)?.apply {
+                searchQuery?.let {
+                    isIconified = false
+                    setQuery(it, false)
+                }
+
+
+                val queryListener = OnQueryTextListener()
+
+                queryHint = resources.getString(R.string.search_contact)
+                setOnQueryTextListener(queryListener)
+            }
+        }
+        else {
+            actionBar.apply {
+                setDisplayShowHomeEnabled(true)
+                setDisplayHomeAsUpEnabled(true)
+            }
+
+            menuInflater.inflate(R.menu.menu_contact_selection, menu)
         }
     }
 
@@ -196,25 +271,40 @@ class ListFragment : Fragment(), MenuProvider {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> {
-                val action = ListFragmentDirections.actionListFragmentToSettingsFragment()
+        return when(hasSelection) {
+            false -> when (item.itemId) {
+                R.id.action_settings -> {
+                    val action = ListFragmentDirections.actionListFragmentToSettingsFragment()
 
-                findNavController().navigate(action)
+                    findNavController().navigate(action)
 
-                true
+                    true
+                }
+                R.id.action_pre_seed -> {
+                    viewModel.preSeed()
+
+                    true
+                }
+                R.id.action_clear -> {
+                    viewModel.deleteAll()
+
+                    true
+                }
+                else -> false
             }
-            R.id.action_pre_seed -> {
-                viewModel.preSeed()
+            true -> when (item.itemId) {
+                R.id.action_selection_delete -> {
+                    adapter.tracker?.selection?.forEach { id -> viewModel.delete(id.toInt()) }
 
-                true
-            }
-            R.id.action_clear -> {
-                viewModel.deleteAll()
+                    true
+                }
+                android.R.id.home -> {
+                    adapter.tracker?.clearSelection()
 
-                true
+                    true
+                }
+                else -> false
             }
-            else -> false
         }
     }
 }

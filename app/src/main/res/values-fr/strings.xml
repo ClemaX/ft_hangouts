@@ -23,4 +23,5 @@
     <string name="theme_olive">Olive</string>
     <string name="theme_silver">Argent</string>
     <string name="theme_teal">Sarcelle</string>
+    <string name="action_delete">Supprimer</string>
 </resources>

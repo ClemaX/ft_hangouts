@@ -20,7 +20,7 @@
             android:theme="@style/ThemeOverlay.Ft_hangouts.ActionBar"
             app:popupTheme="@style/ThemeOverlay.Ft_hangouts.ActionBar.Popup"
             app:layout_scrollFlags="scroll|enterAlways|snap"
-            tools:menu="@menu/menu_main"
+            tools:menu="@menu/menu_contact_list"
             />
 
     </com.google.android.material.appbar.AppBarLayout>

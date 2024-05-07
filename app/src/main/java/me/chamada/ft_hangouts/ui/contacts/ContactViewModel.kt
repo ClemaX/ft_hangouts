@@ -80,4 +80,8 @@ class ContactViewModel(private val repository: ContactRepository) : ViewModel() 
     fun deleteAll() = viewModelScope.launch {
         repository.deleteAll()
     }
+
+    fun delete(id: Int) = viewModelScope.launch {
+        repository.deleteById(id)
+    }
 }

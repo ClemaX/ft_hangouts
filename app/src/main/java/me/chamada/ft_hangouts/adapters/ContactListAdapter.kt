@@ -2,28 +2,35 @@ package me.chamada.ft_hangouts.adapters
 
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.selection.ItemDetailsLookup
+import androidx.recyclerview.selection.ItemKeyProvider
+import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.NO_ID
 import me.chamada.ft_hangouts.R
 import me.chamada.ft_hangouts.views.RecyclerViewIndexedScroller
 import me.chamada.ft_hangouts.data.model.contact.Contact
 import kotlin.math.abs
 
 
-open class ContactListAdapter(private val clickListener: OnContactClickListener?) :
+class ContactListAdapter(private val clickListener: OnContactClickListener?) :
     ListAdapter<Contact, ContactListAdapter.ContactViewHolder>(ContactComparator()),
     Filterable,
     RecyclerViewIndexedScroller.IndexLabelListener {
     private var contactList: List<Contact>? = null
     private var contactFilter: Filter = ContactFilter()
     private var searchQuery: CharSequence? = null
+
+    var tracker: SelectionTracker<Long>? = null
 
     companion object {
         fun filterContacts(contacts: List<Contact>, query: CharSequence?): List<Contact> {
@@ -95,7 +102,7 @@ open class ContactListAdapter(private val clickListener: OnContactClickListener?
             return Color.HSVToColor(hsv)
         }
 
-        fun bind(contact: Contact?) {
+        fun bind(contact: Contact?, isActivated: Boolean? = null) {
             if (contact != null) {
                 val contactColor = getContactColor(contact)
                 val initials = getInitials(contact)
@@ -112,6 +119,36 @@ open class ContactListAdapter(private val clickListener: OnContactClickListener?
                         clickListener.onClick(contact, itemView)
                     }
                 }
+
+                itemView.isActivated = isActivated ?: false
+            }
+        }
+
+        fun getItemDetails(): ItemDetailsLookup.ItemDetails<Long> =
+            object : ItemDetailsLookup.ItemDetails<Long>() {
+                override fun getPosition(): Int = adapterPosition
+                override fun getSelectionKey(): Long = itemId
+            }
+    }
+
+    class ContactItemKeyProvider(private val adapter: ContactListAdapter):
+        ItemKeyProvider<Long>(SCOPE_MAPPED) {
+        override fun getKey(position: Int): Long {
+            return adapter.getItemId(position)
+        }
+
+        override fun getPosition(key: Long): Int {
+            return adapter.getItemPosition(key)
+        }
+    }
+
+    class ContactDetailsProvider(private val recyclerView: RecyclerView): ItemDetailsLookup<Long>() {
+        override fun getItemDetails(e: MotionEvent): ItemDetails<Long>? {
+            val view = recyclerView.findChildViewUnder(e.x, e.y)
+
+            return view?.let {
+                val viewHolder = recyclerView.getChildViewHolder(it)
+                return (viewHolder as ContactViewHolder).getItemDetails()
             }
         }
     }
@@ -153,6 +190,10 @@ open class ContactListAdapter(private val clickListener: OnContactClickListener?
         }
     }
 
+    init {
+        setHasStableIds(true)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
         return ContactViewHolder.create(parent, clickListener)
     }
@@ -160,7 +201,7 @@ open class ContactListAdapter(private val clickListener: OnContactClickListener?
     override fun onBindViewHolder(holder: ContactViewHolder, position: Int) {
         val current = getItem(position)
 
-        return holder.bind(current)
+        return holder.bind(current, tracker?.isSelected(getItemId(position)))
     }
 
     override fun submitList(list: List<Contact>?) {
@@ -182,5 +223,15 @@ open class ContactListAdapter(private val clickListener: OnContactClickListener?
         val name = contact.name.ifBlank { contact.phoneNumber.ifBlank { "?" } }
 
         return name[0].uppercase()
+    }
+
+    override fun getItemId(position: Int): Long {
+        val contact = getItem(position)?: return NO_ID
+
+        return contact.id.toLong()
+    }
+
+    fun getItemPosition(id: Long): Int {
+        return contactList?.indexOfFirst { it.id == id.toInt() }?: RecyclerView.NO_POSITION
     }
 }
