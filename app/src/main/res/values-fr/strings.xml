@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="action_settings">Paramètres</string>
-    <string name="list_fragment_label">Contacts</string>
-    <string name="edit_fragment_label">Éditer Contact</string>
+    <string name="menu_nav_settings">Paramètres</string>
+    <string name="fragment_contact_list_label">Contacts</string>
+    <string name="fragment_contact_edit_label">Éditer Contact</string>
     <string name="action_add_contact">Ajouter Contact</string>
     <string name="name">Nom</string>
     <string name="contact_name">Nom du Contact</string>
@@ -27,4 +27,6 @@
     <string name="prompt_confirm_delete">Êtes-vous sur de vouloir procéder à la supression?</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
+    <string name="menu_nav_contact_list">Contacts</string>
+    <string name="menu_nav_inbox">Messages</string>
 </resources>

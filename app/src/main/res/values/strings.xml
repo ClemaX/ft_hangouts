@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name" translatable="false">ft_hangouts</string>
-    <string name="action_settings">Settings</string>
+    <string name="menu_nav_settings">Settings</string>
     <string name="action_add_contact">Add Contact</string>
-    <string name="list_fragment_label">Contacts</string>
-    <string name="edit_fragment_label">Edit Contact</string>
+    <string name="fragment_contact_list_label">Contacts</string>
+    <string name="fragment_contact_edit_label">Edit Contact</string>
     <string name="name">Name</string>
     <string name="contact_name">Contact Name</string>
     <string name="phone_number">Phone Number</string>
@@ -28,4 +28,6 @@
     <string name="prompt_confirm_delete">Are you sure you want to proceed with the deletion?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="menu_nav_contact_list">Contacts</string>
+    <string name="menu_nav_inbox">Messages</string>
 </resources>

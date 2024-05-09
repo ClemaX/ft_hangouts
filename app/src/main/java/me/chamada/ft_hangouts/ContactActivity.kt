@@ -11,6 +11,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.DynamicColorsOptions
@@ -46,6 +47,15 @@ class ContactActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenc
             binding.appbarLayout.setExpanded(true)
         }
 
+        binding.apply {
+
+           /* navbar.setOnItemSelectedListener { item ->
+                println("Selected: ${item.itemId}")
+                true
+            }*/
+
+            navbar.setupWithNavController(navController)
+        }
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 

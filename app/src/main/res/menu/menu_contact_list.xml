@@ -9,14 +9,8 @@
         android:title="@string/action_search"
         android:icon="@drawable/ic_action_search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="always|collapseActionView"
+        app:showAsAction="ifRoom|collapseActionView"
         />
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        android:icon="@drawable/ic_action_settings"
-        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_pre_seed"
         android:orderInCategory="100"

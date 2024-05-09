@@ -36,14 +36,14 @@ class ListFragment : Fragment(), MenuProvider, DeleteDialogFragment.OnConfirmLis
 
     private var _binding: FragmentContactListBinding? = null
     private var _actionBar: ActionBar? = null
-    private var _fab: FloatingActionButton? = null
     private var _appBarLayout: AppBarLayout? = null
+    private var _fab: FloatingActionButton? = null
 
     // These properties are only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
     private val actionBar get() = _actionBar!!
-    private val fab get() = _fab!!
     private val appBarLayout get() = _appBarLayout!!
+    private val fab get() = _fab!!
 
     private val viewModel: ContactViewModel by activityViewModels {
         val repository = (requireContext().applicationContext as ContactApplication).repository
@@ -113,10 +113,8 @@ class ListFragment : Fragment(), MenuProvider, DeleteDialogFragment.OnConfirmLis
         }
     }
 
-    private class ScrollerChangeListener(
-            private val appBarLayout: AppBarLayout,
-            private val fab: FloatingActionButton
-    ): RecyclerViewIndexedScroller.OnScrollChangeListener {
+    private inner class ScrollerChangeListener:
+        RecyclerViewIndexedScroller.OnScrollChangeListener {
         private var appBarWasExpanded: Boolean = true
 
         override fun onScrollStart() {
@@ -166,17 +164,17 @@ class ListFragment : Fragment(), MenuProvider, DeleteDialogFragment.OnConfirmLis
         searchQuery = savedInstanceState?.getCharSequence(KEY_SEARCH_QUERY)
 
         _binding = FragmentContactListBinding.inflate(inflater, container, false)
-        _fab = activity.findViewById(R.id.fab)
-        _actionBar = activity.supportActionBar
 
+        _actionBar = activity.supportActionBar
         _appBarLayout = activity.findViewById(R.id.appbar_layout)
+        _fab = activity.findViewById(R.id.fab)
 
         searchQuery?.let {
             adapter.filter.filter(it)
         }
 
         binding.apply {
-            val scrollerChangeListener = ScrollerChangeListener(appBarLayout, fab)
+            val scrollerChangeListener = ScrollerChangeListener()
 
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -276,13 +274,6 @@ class ListFragment : Fragment(), MenuProvider, DeleteDialogFragment.OnConfirmLis
         // as you specify a parent activity in AndroidManifest.xml.
         return when(hasSelection) {
             false -> when (item.itemId) {
-                R.id.action_settings -> {
-                    val action = ListFragmentDirections.actionListFragmentToSettingsFragment()
-
-                    findNavController().navigate(action)
-
-                    true
-                }
                 R.id.action_pre_seed -> {
                     viewModel.preSeed()
 

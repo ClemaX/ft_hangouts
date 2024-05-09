@@ -1,4 +1,4 @@
-package me.chamada.ft_hangouts.ui.contacts
+package me.chamada.ft_hangouts.ui.settings
 
 import android.os.Bundle
 import android.view.View
