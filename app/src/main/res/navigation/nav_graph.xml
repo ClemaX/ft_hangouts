@@ -3,58 +3,61 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/ContactListFragment">
+    app:startDestination="@id/view_contacts">
 
-    <fragment
-        android:id="@+id/ContactListFragment"
-        android:name="me.chamada.ft_hangouts.ui.contacts.ListFragment"
-        android:label="@string/fragment_contact_list_label"
-        tools:layout="@layout/fragment_contact_list">
+    <navigation android:id="@+id/view_contacts"
+        app:startDestination="@id/ContactListFragment">
+        <fragment
+            android:id="@+id/ContactEditFragment"
+            android:name="me.chamada.ft_hangouts.ui.contacts.EditFragment"
+            android:label="@string/fragment_contact_edit_label"
+            tools:layout="@layout/fragment_contact_edit">
 
-        <action
-            android:id="@+id/action_ListFragment_to_DetailsFragment"
-            app:destination="@id/ContactDetailsFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
-        <action
-            android:id="@+id/action_ListFragment_to_EditFragment"
-            app:destination="@id/ContactEditFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
-    </fragment>
-    <fragment
-        android:id="@+id/ContactEditFragment"
-        android:name="me.chamada.ft_hangouts.ui.contacts.EditFragment"
-        android:label="@string/fragment_contact_edit_label"
-        tools:layout="@layout/fragment_contact_edit">
+            <action
+                android:id="@+id/action_EditFragment_to_ListFragment"
+                app:destination="@id/ContactListFragment"
+                app:enterAnim="@android:anim/fade_in"
+                app:exitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@android:anim/fade_in"
+                app:popExitAnim="@android:anim/fade_out" />
+        </fragment>
+        <fragment
+            android:id="@+id/ContactListFragment"
+            android:name="me.chamada.ft_hangouts.ui.contacts.ListFragment"
+            android:label="@string/fragment_contact_list_label"
+            tools:layout="@layout/fragment_contact_list">
 
-        <action
-            android:id="@+id/action_EditFragment_to_ListFragment"
-            app:destination="@id/ContactListFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
-    </fragment>
+            <action
+                android:id="@+id/action_ListFragment_to_DetailsFragment"
+                app:destination="@id/ContactDetailsFragment"
+                app:enterAnim="@android:anim/fade_in"
+                app:exitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@android:anim/fade_in"
+                app:popExitAnim="@android:anim/fade_out" />
+            <action
+                android:id="@+id/action_ListFragment_to_EditFragment"
+                app:destination="@id/ContactEditFragment"
+                app:enterAnim="@android:anim/fade_in"
+                app:exitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@android:anim/fade_in"
+                app:popExitAnim="@android:anim/fade_out" />
+        </fragment>
+        <fragment
+            android:id="@+id/ContactDetailsFragment"
+            android:name="me.chamada.ft_hangouts.ui.contacts.DetailsFragment"
+            android:label="Contact Details"
+            tools:layout="@layout/fragment_contact_details">
+            <action
+                android:id="@+id/action_DetailsFragment_to_EditFragment"
+                app:destination="@id/ContactEditFragment"
+                app:enterAnim="@android:anim/fade_in"
+                app:exitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@android:anim/fade_in"
+                app:popExitAnim="@android:anim/fade_out" />
+        </fragment>
+    </navigation>
     <fragment
-        android:id="@+id/SettingsFragment"
+        android:id="@+id/view_settings"
         android:name="me.chamada.ft_hangouts.ui.settings.SettingsFragment"
         android:label="@string/settings_fragment_label" />
-    <fragment
-        android:id="@+id/ContactDetailsFragment"
-        android:name="me.chamada.ft_hangouts.ui.contacts.DetailsFragment"
-        android:label="Contact Details"
-        tools:layout="@layout/fragment_contact_details">
-        <action
-            android:id="@+id/action_DetailsFragment_to_EditFragment"
-            app:destination="@id/ContactEditFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
-    </fragment>
 </navigation>

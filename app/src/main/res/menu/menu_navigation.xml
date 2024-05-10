@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@id/ContactListFragment"
+    <item android:id="@id/view_contacts"
         android:title="@string/menu_nav_contact_list"
         android:icon="@drawable/ic_action_people" />
-    <item android:id="@+id/ConversationFragment"
+    <item android:id="@+id/view_conversations"
         android:title="@string/menu_nav_inbox"
         android:icon="@drawable/ic_action_message" />
-    <item android:id="@+id/SettingsFragment"
+    <item android:id="@+id/view_settings"
         android:title="@string/menu_nav_settings"
         android:icon="@drawable/ic_action_settings" />
 </menu>

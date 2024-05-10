@@ -17,13 +17,13 @@ import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.DynamicColorsOptions
 import me.chamada.ft_hangouts.data.local.contact.ContactRepository
 import me.chamada.ft_hangouts.ui.contacts.ContactViewModel
-import me.chamada.ft_hangouts.databinding.ActivityMainBinding
+import me.chamada.ft_hangouts.databinding.ActivityHangoutsBinding
 import java.text.DateFormat
 import java.util.Date
 
-class ContactActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
+class HangoutsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityHangoutsBinding
     private lateinit var repository: ContactRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +35,7 @@ class ContactActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenc
 
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityHangoutsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
@@ -48,18 +48,13 @@ class ContactActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenc
         }
 
         binding.apply {
-
-           /* navbar.setOnItemSelectedListener { item ->
-                println("Selected: ${item.itemId}")
-                true
-            }*/
-
             navbar.setupWithNavController(navController)
         }
+
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        repository = (applicationContext as ContactApplication).repository
+        repository = (applicationContext as HangoutsApplication).contactRepository
     }
 
     override fun onResume() {
@@ -113,9 +108,6 @@ class ContactActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenc
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if (key == "appBarColor") {
-            val newBaseColor = sharedPreferences?.getString("appBarColor", "material_you")
-
-            setThemeBaseColor(newBaseColor)
             recreate()
         }
     }

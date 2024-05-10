@@ -22,7 +22,7 @@ import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import me.chamada.ft_hangouts.ContactApplication
+import me.chamada.ft_hangouts.HangoutsApplication
 import me.chamada.ft_hangouts.R
 import me.chamada.ft_hangouts.adapters.ContactListAdapter
 import me.chamada.ft_hangouts.databinding.FragmentContactListBinding
@@ -46,7 +46,7 @@ class ListFragment : Fragment(), MenuProvider, DeleteDialogFragment.OnConfirmLis
     private val fab get() = _fab!!
 
     private val viewModel: ContactViewModel by activityViewModels {
-        val repository = (requireContext().applicationContext as ContactApplication).repository
+        val repository = (requireContext().applicationContext as HangoutsApplication).contactRepository
 
         ContactViewModel.Factory(repository)
     }
