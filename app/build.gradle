@@ -38,7 +38,10 @@ android {
 }
 
 dependencies {
+    // Serialization
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$rootProject.jsonVersion"
 
+    // Android
     implementation "androidx.core:core-ktx:$rootProject.coreVersion"
     implementation "androidx.appcompat:appcompat:$rootProject.appCompatVersion"
 
