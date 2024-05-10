@@ -5,17 +5,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.contacts.ListFragment"
-    >
+    tools:context=".ui.contacts.ListFragment">
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:scrollbars="vertical"
         android:layoutAnimation="@anim/list_layout"
         tools:listitem="@layout/list_element_contact"
-        tools:layoutAnimation="@anim/noop_layout"
-        />
+        tools:layoutAnimation="@anim/noop_layout" />
 
     <me.chamada.ft_hangouts.views.RecyclerViewIndexedScroller
         android:id="@+id/scroller"
