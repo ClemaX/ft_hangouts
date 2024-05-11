@@ -40,18 +40,17 @@ class HangoutsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
 
         setSupportActionBar(binding.toolbar)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
         val navController = navHostFragment.navController
 
         navController.addOnDestinationChangedListener { _, _, _ ->
             binding.appbarLayout.setExpanded(true)
         }
 
-        binding.apply {
-            navbar.setupWithNavController(navController)
-        }
+        binding.navbar.setupWithNavController(navController)
 
-        appBarConfiguration = AppBarConfiguration(navController.graph)
+        appBarConfiguration = AppBarConfiguration(binding.navbar.menu)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         repository = (applicationContext as HangoutsApplication).contactRepository
