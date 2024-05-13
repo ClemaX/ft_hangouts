@@ -56,7 +56,7 @@ class ContactListAdapter(private val clickListener: OnContactClickListener?) :
         private val contactNameView: TextView = itemView.findViewById(R.id.name)
         private val contactPhoneNumberView: TextView = itemView.findViewById(R.id.phoneNumber)
         private val contactInitialsTextView: TextView = itemView.findViewById(R.id.initials)
-        private val contactInitialsBackground: ImageView = itemView.findViewById(R.id.initials_background)
+        private val contactInitialsBackground: ImageView = itemView.findViewById(R.id.initialsBackground)
 
         companion object {
             fun create(

@@ -29,4 +29,6 @@
     <string name="no">Non</string>
     <string name="menu_nav_contact_list">Contacts</string>
     <string name="menu_nav_inbox">Messages</string>
+    <string name="fragment_conversation_list_label">Conversations</string>
+    <string name="unread">Non-lû</string>
 </resources>

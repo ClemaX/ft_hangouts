@@ -60,4 +60,24 @@
         android:id="@+id/view_settings"
         android:name="me.chamada.ft_hangouts.ui.settings.SettingsFragment"
         android:label="@string/settings_fragment_label" />
+    <navigation android:id="@+id/view_conversations"
+        app:startDestination="@id/ConversationListFragment">
+        <fragment
+            android:id="@+id/ConversationDetailsFragment"
+            android:name="me.chamada.ft_hangouts.ui.conversations.ConversationDetailsFragment"
+            android:label="TODO" />
+        <fragment
+            android:id="@+id/ConversationListFragment"
+            android:name="me.chamada.ft_hangouts.ui.conversations.ConversationListFragment"
+            android:label="@string/fragment_conversation_list_label"
+            tools:layout="@layout/fragment_conversation_list" >
+            <action
+                android:id="@+id/action_ConversationListFragment_to_ConversationDetailsFragment"
+                app:destination="@id/ConversationDetailsFragment"
+                app:enterAnim="@android:anim/fade_in"
+                app:exitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@android:anim/fade_in"
+                app:popExitAnim="@android:anim/fade_out" />
+        </fragment>
+    </navigation>
 </navigation>

@@ -24,7 +24,7 @@ import java.util.Date
 class HangoutsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityHangoutsBinding
-    private lateinit var repository: ContactRepository
+    private lateinit var contactRepository: ContactRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
@@ -53,7 +53,7 @@ class HangoutsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
         appBarConfiguration = AppBarConfiguration(binding.navbar.menu)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        repository = (applicationContext as HangoutsApplication).contactRepository
+        contactRepository = (applicationContext as HangoutsApplication).contactRepository
     }
 
     override fun onResume() {
@@ -73,9 +73,9 @@ class HangoutsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
             }
         }
     }
-
+/*
     override val defaultViewModelProviderFactory: ContactViewModel.Factory
-        get() = ContactViewModel.Factory(repository)
+        get() = ContactViewModel.Factory(contactRepository)*/
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)

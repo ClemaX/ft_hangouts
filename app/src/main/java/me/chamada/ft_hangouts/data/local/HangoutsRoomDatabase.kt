@@ -12,8 +12,10 @@ import me.chamada.ft_hangouts.data.local.contact.ContactDAO
 import me.chamada.ft_hangouts.data.local.conversation.ConversationDAO
 import me.chamada.ft_hangouts.data.model.contact.Contact
 import me.chamada.ft_hangouts.data.model.conversation.Conversation
+import me.chamada.ft_hangouts.data.model.conversation.Interlocutor
+import me.chamada.ft_hangouts.data.model.conversation.Message
 
-@Database(entities = [Contact::class, Conversation::class], version = 1, exportSchema = false)
+@Database(entities = [Contact::class, Conversation::class, Interlocutor::class, Message::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class HangoutsRoomDatabase : RoomDatabase() {
     private class ContactDatabaseCallback(private val scope: CoroutineScope) : Callback() {

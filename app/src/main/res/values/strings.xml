@@ -30,4 +30,8 @@
     <string name="no">No</string>
     <string name="menu_nav_contact_list">Contacts</string>
     <string name="menu_nav_inbox">Messages</string>
+    <string name="fragment_conversation_list_label">Conversations</string>
+    <string name="unread">Unread</string>
+    <string name="message_with_sender">%1$s: %2$s</string>
+    <string name="search_conversation">Search conversation</string>
 </resources>
