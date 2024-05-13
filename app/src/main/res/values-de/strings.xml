@@ -29,4 +29,11 @@
     <string name="no">Nein</string>
     <string name="menu_nav_contact_list">Kontakte</string>
     <string name="menu_nav_inbox">Mitteilungen</string>
+    <string name="fragment_conversation_list_label">Konversationen</string>
+    <string name="unread">Ungelesen</string>
+    <string name="message_with_sender">%1$s: %2$s</string>
+    <string name="search_conversation">Suchen</string>
+    <string name="fragment_conversation_create_label">Neue Konversation</string>
+    <string name="type_message">Geben Sie eine Nachricht ein...</string>
+    <string name="send_message">Mitteilung senden</string>
 </resources>

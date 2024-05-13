@@ -7,15 +7,15 @@ import me.chamada.ft_hangouts.data.model.contact.Contact
 
 
 class ContactViewModel(private val repository: ContactRepository) : ViewModel() {
-    private val _currentId = MutableLiveData(0)
+    private val _currentId = MutableLiveData(0L)
     private val initialContact: LiveData<Contact> = MutableLiveData(Contact())
 
     val all: LiveData<List<Contact>> = repository.all.asLiveData()
-    val currentId: LiveData<Int> get() = _currentId
+    val currentId: LiveData<Long> get() = _currentId
 
     val current: LiveData<Contact> = currentId.switchMap { id ->
         when(id) {
-            0 -> initialContact
+            0L -> initialContact
             else -> repository.getById(id).asLiveData()
         }
     }
@@ -60,7 +60,7 @@ class ContactViewModel(private val repository: ContactRepository) : ViewModel() 
         }
     }
 
-    fun select(contactId: Int) {
+    fun select(contactId: Long) {
         _currentId.postValue(contactId)
     }
 
@@ -81,7 +81,7 @@ class ContactViewModel(private val repository: ContactRepository) : ViewModel() 
         repository.deleteAll()
     }
 
-    fun delete(id: Int) = viewModelScope.launch {
+    fun delete(id: Long) = viewModelScope.launch {
         repository.deleteById(id)
     }
 }

@@ -15,10 +15,11 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import me.chamada.ft_hangouts.R
 import me.chamada.ft_hangouts.databinding.FragmentContactDetailsBinding
+import me.chamada.ft_hangouts.ui.DeleteDialogFragment
 
 class DetailsFragment : Fragment(), MenuProvider, DeleteDialogFragment.OnConfirmListener {
     private val viewModel: ContactViewModel by activityViewModels()
-    private var contactId: Int? = null
+    private var contactId: Long? = null
 
     private val deleteDialogFragment = DeleteDialogFragment(this)
 

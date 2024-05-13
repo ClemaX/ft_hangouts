@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     tools:ignore="MergeRootFrame">
     <ImageView
-        android:id="@+id/initials_background"
+        android:id="@+id/initialsBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/container_contact_avatar"

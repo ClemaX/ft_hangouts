@@ -1,4 +1,4 @@
-package me.chamada.ft_hangouts.ui.contacts
+package me.chamada.ft_hangouts.ui
 
 import android.app.AlertDialog
 import android.app.Dialog

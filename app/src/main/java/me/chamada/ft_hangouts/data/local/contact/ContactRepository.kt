@@ -8,7 +8,7 @@ class ContactRepository(private val dao: ContactDAO) {
     val all: Flow<List<Contact>> = dao.getAll()
 
     @WorkerThread
-    fun getById(id: Int): Flow<Contact> {
+    fun getById(id: Long): Flow<Contact> {
         return dao.getById(id)
     }
 
@@ -28,7 +28,7 @@ class ContactRepository(private val dao: ContactDAO) {
     }
 
     @WorkerThread
-    suspend fun deleteById(id: Int) {
+    suspend fun deleteById(id: Long) {
         dao.deleteById(id)
     }
 }
