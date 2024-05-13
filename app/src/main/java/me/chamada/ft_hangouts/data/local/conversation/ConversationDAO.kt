@@ -3,10 +3,9 @@ package me.chamada.ft_hangouts.data.local.conversation
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import me.chamada.ft_hangouts.data.model.conversation.Conversation
-import me.chamada.ft_hangouts.data.model.conversation.ConversationWithInterlocutor
-import me.chamada.ft_hangouts.data.model.conversation.DetailedConversation
+import me.chamada.ft_hangouts.data.model.conversation.ConversationPreview
+import me.chamada.ft_hangouts.data.model.conversation.ConversationWithContact
 import me.chamada.ft_hangouts.data.model.conversation.Interlocutor
-import me.chamada.ft_hangouts.data.model.conversation.Message
 
 @Dao
 interface ConversationDAO {
@@ -23,14 +22,39 @@ interface ConversationDAO {
         + "JOIN contacts AS sc ON sc.phone_number = s.phone_number "
         + "ORDER BY m.conversation_id, m.id DESC"
     )
-    fun getAll(): Flow<List<DetailedConversation>>
+    @RewriteQueriesToDropUnusedColumns
+    fun getAll(): Flow<List<ConversationPreview>>
 
     @Transaction
-    @Query("SELECT * FROM conversations WHERE id = :id")
-    fun getById(id: Int): Flow<ConversationWithInterlocutor>
+    @Query("SELECT conversation.*, "
+        + "interlocutor.phone_number AS interlocutor_phone_number, "
+        + "contact.name AS contact_name, contact.id AS contact_id "
+        + "FROM conversations conversation "
+        + "JOIN interlocutors interlocutor ON interlocutor.conversation_id = conversation.id "
+        + "JOIN contacts contact ON contact.phone_number = interlocutor.phone_number "
+        + "WHERE conversation.id = :id"
+    )
+    fun getById(id: Long): Flow<ConversationWithContact>
+
+    @Query(
+        "SELECT * FROM conversations "
+        + "JOIN interlocutors i ON i.conversation_id "
+        + "WHERE i.phone_number = :phoneNumber"
+    )
+    @RewriteQueriesToDropUnusedColumns
+    fun findByPhoneNumber(phoneNumber: String): Conversation?
+
+    @Query(
+        "SELECT * FROM interlocutors i "
+        + "WHERE i.phone_number = :phoneNumber"
+    )
+    suspend fun findInterlocutorByPhoneNumber(phoneNumber: String): Interlocutor?
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(conversation: Conversation)
+    suspend fun insert(conversation: Conversation): Long
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertInterlocutor(interlocutor: Interlocutor): Long
 
     @Update
     suspend fun update(conversation: Conversation)
@@ -38,5 +62,5 @@ interface ConversationDAO {
     suspend fun deleteAll()
 
     @Query("DELETE FROM conversations WHERE id = :id")
-    suspend fun deleteById(id: Int)
+    suspend fun deleteById(id: Long)
 }

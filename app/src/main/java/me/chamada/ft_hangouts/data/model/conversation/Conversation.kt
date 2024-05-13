@@ -11,21 +11,26 @@ import androidx.room.Relation
 
 @Entity(tableName = "conversations")
 data class Conversation(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
 )
 
-data class ConversationWithInterlocutor(
+data class ConversationWithContact(
     @Embedded val conversation: Conversation = Conversation(),
 
-    @Relation(
+    /*@Relation(
         parentColumn = "id",
         entityColumn = "conversation_id",
     )
-    val interlocutor: Interlocutor = Interlocutor(),
+    val interlocutor: Interlocutor = Interlocutor(),*/
+
+    @ColumnInfo(name = "interlocutor_phone_number") val interlocutorPhoneNumber: String = "",
+
+    @ColumnInfo(name = "contact_id") val contactId: Long? = null,
+    @ColumnInfo(name = "contact_name") val contactName: String? = null,
 )
 
 
-data class DetailedConversation(
+data class ConversationPreview(
     @Embedded val conversation: Conversation = Conversation(),
     @Relation(
         parentColumn = "id",

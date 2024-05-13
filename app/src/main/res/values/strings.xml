@@ -33,5 +33,8 @@
     <string name="fragment_conversation_list_label">Conversations</string>
     <string name="unread">Unread</string>
     <string name="message_with_sender">%1$s: %2$s</string>
-    <string name="search_conversation">Search conversation</string>
+    <string name="search_conversation">Search</string>
+    <string name="fragment_conversation_create_label">New Conversation</string>
+    <string name="type_message">Type a message…</string>
+    <string name="send_message">Send message</string>
 </resources>

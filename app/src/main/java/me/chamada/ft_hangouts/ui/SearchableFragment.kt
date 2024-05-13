@@ -13,7 +13,7 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import me.chamada.ft_hangouts.R
 
-abstract class SearchableListFragment(@StringRes private val queryHintId: Int): Fragment(), MenuProvider {
+abstract class SearchableFragment(@StringRes private val queryHintId: Int): Fragment(), MenuProvider {
     private var searchQuery: CharSequence? = null
     protected var filter: Filter? = null
 

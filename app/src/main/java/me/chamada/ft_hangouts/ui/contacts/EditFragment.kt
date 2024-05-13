@@ -78,7 +78,7 @@ class EditFragment : Fragment() {
                 phoneNumber = binding.editPhoneNumber.text.toString().trim()
             )
 
-            if (contact.id == 0)
+            if (contact.id == 0L)
                 viewModel.insert(contact)
             else {
                 viewModel.update(contact)

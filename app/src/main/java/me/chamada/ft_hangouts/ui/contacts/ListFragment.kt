@@ -25,10 +25,10 @@ import me.chamada.ft_hangouts.R
 import me.chamada.ft_hangouts.adapters.ContactListAdapter
 import me.chamada.ft_hangouts.databinding.FragmentContactListBinding
 import me.chamada.ft_hangouts.ui.DeleteDialogFragment
-import me.chamada.ft_hangouts.ui.SearchableListFragment
+import me.chamada.ft_hangouts.ui.SearchableFragment
 import me.chamada.ft_hangouts.views.RecyclerViewIndexedScroller
 
-class ListFragment: SearchableListFragment(R.string.search_contact), MenuProvider, DeleteDialogFragment.OnConfirmListener {
+class ListFragment: SearchableFragment(R.string.search_contact), MenuProvider, DeleteDialogFragment.OnConfirmListener {
     private var hasSelection: Boolean = false
 
     private val deleteDialogFragment = DeleteDialogFragment(this)
@@ -125,14 +125,14 @@ class ListFragment: SearchableListFragment(R.string.search_contact), MenuProvide
         filter = adapter.filter
     }
 
-    private fun editContact(id: Int = 0) {
+    private fun editContact(id: Long = 0) {
         val action = ListFragmentDirections.actionListFragmentToEditFragment()
 
         viewModel.select(id)
         findNavController().navigate(action)
     }
 
-    private fun viewContact(id: Int) {
+    private fun viewContact(id: Long) {
         val action = ListFragmentDirections.actionListFragmentToDetailsFragment()
 
         viewModel.select(id)
@@ -269,6 +269,6 @@ class ListFragment: SearchableListFragment(R.string.search_contact), MenuProvide
     }
 
     override fun onConfirmDelete() {
-        adapter.tracker?.selection?.forEach { id -> viewModel.delete(id.toInt()) }
+        adapter.tracker?.selection?.forEach { id -> viewModel.delete(id) }
     }
 }

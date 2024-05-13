@@ -17,22 +17,22 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import me.chamada.ft_hangouts.R
 import me.chamada.ft_hangouts.data.model.contact.Contact
-import me.chamada.ft_hangouts.data.model.conversation.DetailedConversation
+import me.chamada.ft_hangouts.data.model.conversation.ConversationPreview
 import kotlin.math.abs
 
 class ConversationListAdapter(private val clickListener: OnConversationClickListener?) :
-    ListAdapter<DetailedConversation,
+    ListAdapter<ConversationPreview,
             ConversationListAdapter.ConversationViewHolder>(ConversationComparator()),
     Filterable {
     private val conversationFilter = ConversationFilter()
 
-    private var conversationList: List<DetailedConversation>? = null
+    private var conversationList: List<ConversationPreview>? = null
     private var searchQuery: CharSequence? = null
 
     var tracker: SelectionTracker<Long>? = null
 
     companion object {
-        fun filterConversations(conversations: List<DetailedConversation>, query: CharSequence?): List<DetailedConversation> {
+        fun filterConversations(conversations: List<ConversationPreview>, query: CharSequence?): List<ConversationPreview> {
             return if (!query.isNullOrBlank()) {
                 val trimmedConstraint = query.trim()
                 conversations.filter { conversation ->
@@ -47,7 +47,7 @@ class ConversationListAdapter(private val clickListener: OnConversationClickList
     }
 
     fun interface OnConversationClickListener {
-        fun onClick(conversation: DetailedConversation, view: View?)
+        fun onClick(conversation: ConversationPreview, view: View?)
     }
 
     class ConversationViewHolder(itemView: View, private val clickListener: OnConversationClickListener?):
@@ -68,30 +68,6 @@ class ConversationListAdapter(private val clickListener: OnConversationClickList
 
                 return ConversationViewHolder(view, clickListener)
             }
-
-            // TODO: Move to Contact companion or utils Singleton
-            fun getInitials(contact: Contact): String {
-                val names = contact.name
-                    .trim()
-                    .split(Regex("""\s+"""))
-                    .takeIf{ it.size > 1 || it[0].isNotEmpty() }
-                    ?: emptyList()
-
-                val initialsString = if (names.isNotEmpty()) {
-                    names.foldIndexed("") { i, acc, name ->
-                        when (i) {
-                            0, 1, names.count() - 1 -> acc + name[0].uppercaseChar()
-                            else -> acc
-                        }
-                    }
-                } else if (contact.phoneNumber.isNotBlank()) {
-                    contact.phoneNumber.substring(0, 1)
-                } else {
-                    "?"
-                }
-
-                return initialsString
-            }
         }
 
         private fun getContactColor(contact: Contact): Int {
@@ -103,7 +79,7 @@ class ConversationListAdapter(private val clickListener: OnConversationClickList
             return Color.HSVToColor(hsv)
         }
 
-        fun bind(conversation: DetailedConversation?, isActivated: Boolean? = null) {
+        fun bind(conversation: ConversationPreview?, isActivated: Boolean? = null) {
             if (conversation != null) {
                 val contactColor = getContactColor(Contact())// TODO: getContactColor(conversation.interlocutor)
                 val initials = "?"// TODO: getInitials(conversation.interlocutor)
@@ -113,7 +89,7 @@ class ConversationListAdapter(private val clickListener: OnConversationClickList
 
                 conversationNameView.text = conversation.interlocutor.phoneNumber
                 if (conversation.lastMessageContent != null) {
-                    val senderName = conversation.lastMessageSenderName?: conversation.lastMessageSenderPhoneNumber
+                    //val senderName = conversation.lastMessageSenderName?: conversation.lastMessageSenderPhoneNumber
                     /*lastMessageView.text = context.getString(
                         R.string.message_with_sender,
                         senderName,
@@ -140,12 +116,12 @@ class ConversationListAdapter(private val clickListener: OnConversationClickList
             }
     }
 
-    class ConversationComparator: DiffUtil.ItemCallback<DetailedConversation>() {
-        override fun areItemsTheSame(oldItem: DetailedConversation, newItem: DetailedConversation): Boolean {
+    class ConversationComparator: DiffUtil.ItemCallback<ConversationPreview>() {
+        override fun areItemsTheSame(oldItem: ConversationPreview, newItem: ConversationPreview): Boolean {
             return oldItem.conversation.id == newItem.conversation.id
         }
 
-        override fun areContentsTheSame(oldItem: DetailedConversation, newItem: DetailedConversation): Boolean {
+        override fun areContentsTheSame(oldItem: ConversationPreview, newItem: ConversationPreview): Boolean {
             return oldItem == newItem
         }
     }
@@ -172,7 +148,7 @@ class ConversationListAdapter(private val clickListener: OnConversationClickList
         override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
             if (results != null) {
                 @Suppress("UNCHECKED_CAST")
-                super@ConversationListAdapter.submitList(results.values as MutableList<DetailedConversation>)
+                super@ConversationListAdapter.submitList(results.values as MutableList<ConversationPreview>)
             }
         }
     }
@@ -194,7 +170,7 @@ class ConversationListAdapter(private val clickListener: OnConversationClickList
 
             return view?.let {
                 val viewHolder = recyclerView.getChildViewHolder(it)
-                return (viewHolder as ConversationListAdapter.ConversationViewHolder).getItemDetails()
+                return (viewHolder as ConversationViewHolder).getItemDetails()
             }
         }
     }
@@ -213,7 +189,7 @@ class ConversationListAdapter(private val clickListener: OnConversationClickList
         return holder.bind(current, tracker?.isSelected(getItemId(position)))
     }
 
-    override fun submitList(list: List<DetailedConversation>?) {
+    override fun submitList(list: List<ConversationPreview>?) {
         conversationList = list
 
         super.submitList(list)
@@ -228,7 +204,7 @@ class ConversationListAdapter(private val clickListener: OnConversationClickList
     }
 
     fun getItemPosition(id: Long): Int {
-        return conversationList?.indexOfFirst { it.conversation.id == id.toInt() }?: RecyclerView.NO_POSITION
+        return conversationList?.indexOfFirst { it.conversation.id == id }?: RecyclerView.NO_POSITION
     }
 }
 

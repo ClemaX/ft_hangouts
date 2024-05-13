@@ -12,9 +12,9 @@ import java.util.Date
 // Many messages have one interlocutor (sender)
 @Entity(tableName = "messages", indices = [Index(value = ["created_at"])])
 data class Message(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    @ColumnInfo(name = "conversation_id") val conversationId: Int,
-    @ColumnInfo(name = "sender_id") val senderId: Int,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    @ColumnInfo(name = "conversation_id") val conversationId: Long,
+    @ColumnInfo(name = "sender_id") val senderId: Long,
     @ColumnInfo(name = "created_at") val createdAt: Date,
     val content: String
 )

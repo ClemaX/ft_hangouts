@@ -228,10 +228,10 @@ class ContactListAdapter(private val clickListener: OnContactClickListener?) :
     override fun getItemId(position: Int): Long {
         val contact = getItem(position)?: return NO_ID
 
-        return contact.id.toLong()
+        return contact.id
     }
 
     fun getItemPosition(id: Long): Int {
-        return contactList?.indexOfFirst { it.id == id.toInt() }?: RecyclerView.NO_POSITION
+        return contactList?.indexOfFirst { it.id == id }?: RecyclerView.NO_POSITION
     }
 }

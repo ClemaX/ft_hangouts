@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "interlocutors")
 data class Interlocutor(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    @ColumnInfo(name = "conversation_id") val conversationId: Int = 0,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    @ColumnInfo(name = "conversation_id") val conversationId: Long = 0,
     @ColumnInfo(name = "phone_number") val phoneNumber: String = ""
 )

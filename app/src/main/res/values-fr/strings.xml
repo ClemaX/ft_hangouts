@@ -31,4 +31,9 @@
     <string name="menu_nav_inbox">Messages</string>
     <string name="fragment_conversation_list_label">Conversations</string>
     <string name="unread">Non-lû</string>
+    <string name="message_with_sender">%1$s : %2$s</string>
+    <string name="search_conversation">Rechercher</string>
+    <string name="fragment_conversation_create_label">Nouvelle conversation</string>
+    <string name="type_message">Entrez un message...</string>
+    <string name="send_message">Envoyer le message</string>
 </resources>

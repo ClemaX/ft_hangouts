@@ -1,7 +1,6 @@
 package me.chamada.ft_hangouts.ui.conversations
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -10,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -19,30 +17,29 @@ import androidx.recyclerview.selection.SelectionPredicates
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import me.chamada.ft_hangouts.HangoutsApplication
 import me.chamada.ft_hangouts.R
 import me.chamada.ft_hangouts.adapters.ConversationListAdapter
 import me.chamada.ft_hangouts.databinding.FragmentConversationListBinding
 import me.chamada.ft_hangouts.ui.DeleteDialogFragment
-import me.chamada.ft_hangouts.ui.SearchableListFragment
-import me.chamada.ft_hangouts.ui.contacts.ListFragment
+import me.chamada.ft_hangouts.ui.SearchableFragment
 
-class ConversationListFragment : SearchableListFragment(R.string.search_conversation), DeleteDialogFragment.OnConfirmListener, MenuProvider {
+class ConversationListFragment:
+    SearchableFragment(R.string.search_conversation),
+    MenuProvider,
+    DeleteDialogFragment.OnConfirmListener {
     private var hasSelection: Boolean = false
 
     private val deleteDialogFragment = DeleteDialogFragment(this)
 
     private var _binding: FragmentConversationListBinding? = null
     private var _actionBar: ActionBar? = null
-    private var _appBarLayout: AppBarLayout? = null
     private var _fab: FloatingActionButton? = null
 
     // These properties are only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
     private val actionBar get() = _actionBar!!
-    private val appBarLayout get() = _appBarLayout!!
     private val fab get() = _fab!!
 
     private val viewModel: ConversationViewModel by activityViewModels {
@@ -53,8 +50,11 @@ class ConversationListFragment : SearchableListFragment(R.string.search_conversa
 
     private val adapter = ConversationListAdapter { conversation, _ -> viewConversation(conversation.conversation.id) }
 
-    private fun viewConversation(conversationId: Int = 0) {
-        val action = ConversationListFragmentDirections.actionConversationListFragmentToConversationDetailsFragment()
+    private fun viewConversation(conversationId: Long = 0) {
+        val action = if (conversationId == 0L)
+            ConversationListFragmentDirections.actionConversationListFragmentToContactPickFragment()
+        else
+            ConversationListFragmentDirections.actionConversationListFragmentToConversationDetailsFragment()
 
         viewModel.select(conversationId)
 
@@ -120,7 +120,6 @@ class ConversationListFragment : SearchableListFragment(R.string.search_conversa
         _binding = FragmentConversationListBinding.inflate(inflater, container, false)
 
         _actionBar = activity.supportActionBar
-        _appBarLayout = activity.findViewById(R.id.appbar_layout)
         _fab = activity.findViewById(R.id.fab)
 
         binding.apply {
@@ -141,6 +140,7 @@ class ConversationListFragment : SearchableListFragment(R.string.search_conversa
         viewModel.select(0)
 
         viewModel.all.observe(viewLifecycleOwner) { conversations ->
+            println("Got ${conversations?.count()} conversations")
             conversations?.let {
                 adapter.submitList(conversations)
                 binding.recyclerView.scheduleLayoutAnimation()
