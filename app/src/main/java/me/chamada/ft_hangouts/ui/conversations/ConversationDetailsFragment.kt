@@ -7,23 +7,26 @@ import android.os.Bundle
 import android.telephony.SmsManager
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import me.chamada.ft_hangouts.R
+import me.chamada.ft_hangouts.adapters.MessageListAdapter
 import me.chamada.ft_hangouts.data.model.conversation.ConversationWithContact
 import me.chamada.ft_hangouts.databinding.FragmentConversationDetailsBinding
 import me.chamada.ft_hangouts.ui.DeleteDialogFragment
@@ -33,7 +36,15 @@ class ConversationDetailsFragment : Fragment(), MenuProvider, DeleteDialogFragme
     private val viewModel: ConversationViewModel by activityViewModels()
     private var conversation: ConversationWithContact? = null
 
+    private val adapter = MessageListAdapter()
+
     private val deleteDialogFragment = DeleteDialogFragment(this)
+    private val requestPermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results ->
+        binding.submitButton.isEnabled = results[Manifest.permission.SEND_SMS] == true
+        if (!binding.submitButton.isEnabled) {
+            binding.messageInput.error = "TODO"
+        }
+    }
 
     private var _binding: FragmentConversationDetailsBinding? = null
     private var _navbar: BottomNavigationView? = null
@@ -45,13 +56,8 @@ class ConversationDetailsFragment : Fragment(), MenuProvider, DeleteDialogFragme
     private val fab get() = _fab!!
 
     companion object {
-        private const val REQUEST_SMS_PERMISSIONS = 0
-    }
-
-    private fun requestSmsPermissions() {
-        ActivityCompat.requestPermissions(requireActivity(),
-            arrayOf(Manifest.permission.SEND_SMS, Manifest.permission.RECEIVE_SMS),
-            REQUEST_SMS_PERMISSIONS)
+        private const val TAG = "ConversationDetails"
+        private val SMS_PERMISSIONS = arrayOf(Manifest.permission.SEND_SMS, Manifest.permission.RECEIVE_SMS)
     }
 
     override fun onCreateView(
@@ -71,6 +77,9 @@ class ConversationDetailsFragment : Fragment(), MenuProvider, DeleteDialogFragme
         _fab = activity.findViewById(R.id.fab)
 
         binding.apply {
+            recyclerView.adapter = adapter
+            //recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
             messageInput.addTextChangedListener(object: TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int)
                 { }
@@ -98,20 +107,22 @@ class ConversationDetailsFragment : Fragment(), MenuProvider, DeleteDialogFragme
                             val sentIntent: PendingIntent? = null
                             val deliveryIntent: PendingIntent? = null
 
-                            println("Sending '$content' to $destinationAddress using $scAddress")
+                            println("Sending '$content' to '$destinationAddress' using '$scAddress'...")
                             try {
                                 smsManager.sendTextMessage(destinationAddress, scAddress, content,
                                     sentIntent, deliveryIntent)
                             } catch (e: Exception) {
-                                println("Could not send SMS: ${e.message}")
+                                Log.e(TAG, "Could not send SMS: ${e.message}")
                             } finally {
                                 messageInput.text.clear()
+                                viewModel.insertMessage(conversation.conversation.id, content)
                             }
 
                             messageInput.isEnabled = true
                         }
                         else -> {
-                            requestSmsPermissions()
+                            println("Requesting SMS permissions...")
+                            requestPermissions.launch(SMS_PERMISSIONS)
                         }
                     }
                 }
@@ -127,6 +138,11 @@ class ConversationDetailsFragment : Fragment(), MenuProvider, DeleteDialogFragme
 
             activity.supportActionBar?.title = conversation.contactName ?:
                 conversation.interlocutorPhoneNumber
+        }
+
+        viewModel.currentMessages.observe(viewLifecycleOwner) { messages ->
+            println("Submitting list to adapter with ${messages.count()} messages...")
+            adapter.submitList(messages)
         }
 
         return binding.root

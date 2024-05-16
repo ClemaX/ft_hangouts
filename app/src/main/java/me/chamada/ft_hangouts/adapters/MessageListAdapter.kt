@@ -67,6 +67,7 @@ class MessageListAdapter:
     }
 
     override fun getItemViewType(position: Int): Int {
+        println("Getting item view type for position ${position}...")
         return when(currentList[position].senderId) {
             -1L -> R.layout.list_element_message_own
             else -> R.layout.list_element_message_interlocutor
@@ -82,7 +83,6 @@ class MessageListAdapter:
     }
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
-        holder.bind(currentList[position])
+        holder.bind(getItem(position))
     }
-
 }
