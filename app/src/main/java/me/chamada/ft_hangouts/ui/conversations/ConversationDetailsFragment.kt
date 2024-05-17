@@ -41,7 +41,7 @@ class ConversationDetailsFragment : Fragment(), MenuProvider, DeleteDialogFragme
     private val requestPermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results ->
         binding.submitButton.isEnabled = results[Manifest.permission.SEND_SMS] == true
         if (!binding.submitButton.isEnabled) {
-            binding.messageInput.error = "TODO"
+            binding.messageInput.error = getString(R.string.permission_not_granted_send_sms)
         }
     }
 
@@ -59,7 +59,10 @@ class ConversationDetailsFragment : Fragment(), MenuProvider, DeleteDialogFragme
 
     companion object {
         private const val TAG = "ConversationDetails"
-        private val SMS_PERMISSIONS = arrayOf(Manifest.permission.SEND_SMS, Manifest.permission.RECEIVE_SMS)
+        private val SMS_PERMISSIONS = arrayOf(
+            Manifest.permission.SEND_SMS,
+            Manifest.permission.RECEIVE_SMS
+        )
     }
 
     override fun onCreateView(

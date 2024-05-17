@@ -34,6 +34,8 @@
     <string name="message_with_sender">%1$s : %2$s</string>
     <string name="search_conversation">Rechercher</string>
     <string name="fragment_conversation_create_label">Nouvelle conversation</string>
-    <string name="type_message">Entrez un message...</string>
+    <string name="type_message">Entrez un message…</string>
     <string name="send_message">Envoyer le message</string>
+    <string name="permission_not_granted_send_sms">Permission d\'envoyer des SMS non accordée</string>
+    <string name="permission_not_granted_receive_sms">Permission de recevoir des SMS non accordée</string>
 </resources>
