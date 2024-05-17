@@ -40,7 +40,4 @@ data class ConversationPreview(
 
     @ColumnInfo(name = "contact_id") val contactId: Long? = null,
     @ColumnInfo(name = "contact_name") val contactName: String? = null,
-
-    @ColumnInfo(name = "last_message_sender_id") val lastMessageSenderId: Long,
-    @ColumnInfo(name = "last_message_content") val lastMessageContent: String? = null
 )

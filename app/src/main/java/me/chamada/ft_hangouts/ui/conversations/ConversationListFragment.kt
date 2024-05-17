@@ -1,5 +1,7 @@
 package me.chamada.ft_hangouts.ui.conversations
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -7,8 +9,11 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -150,6 +155,29 @@ class ConversationListFragment:
         adapter.tracker?.addObserver(SelectionObserver())
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val readSmsPermission = ActivityCompat.checkSelfPermission(requireActivity(),
+            Manifest.permission.READ_SMS)
+
+        if (readSmsPermission != PackageManager.PERMISSION_GRANTED) {
+            val requestPermission = registerForActivityResult(
+                ActivityResultContracts.RequestPermission()
+            ) { isGranted ->
+                if (!isGranted) {
+                    val permissionNotGrantedToast = Toast.makeText(activity,
+                        R.string.permission_not_granted_read_sms,
+                        Toast.LENGTH_SHORT)
+
+                    permissionNotGrantedToast.show()
+
+                    findNavController().navigateUp()
+                }
+            }
+
+            requestPermission.launch(Manifest.permission.READ_SMS)
+        }
     }
 
     override fun onResume() {

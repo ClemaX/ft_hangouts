@@ -3,10 +3,9 @@ package me.chamada.ft_hangouts.data.local.conversation
 import androidx.annotation.WorkerThread
 import kotlinx.coroutines.flow.Flow
 import me.chamada.ft_hangouts.data.model.conversation.Conversation
-import me.chamada.ft_hangouts.data.model.conversation.ConversationWithContact
 import me.chamada.ft_hangouts.data.model.conversation.ConversationPreview
+import me.chamada.ft_hangouts.data.model.conversation.ConversationWithContact
 import me.chamada.ft_hangouts.data.model.conversation.Interlocutor
-import me.chamada.ft_hangouts.data.model.conversation.Message
 
 class ConversationRepository(private val dao: ConversationDAO) {
     val all: Flow<List<ConversationPreview>> = dao.getAll()
@@ -34,16 +33,6 @@ class ConversationRepository(private val dao: ConversationDAO) {
     @WorkerThread
     suspend fun insertInterlocutor(interlocutor: Interlocutor): Long {
         return dao.insertInterlocutor(interlocutor)
-    }
-
-    @WorkerThread
-    suspend fun insertMessage(message: Message): Long {
-        return dao.insertMessage(message)
-    }
-
-    @WorkerThread
-    fun getMessages(id: Long): Flow<List<Message>> {
-        return dao.getMessages(id)
     }
 
     @WorkerThread

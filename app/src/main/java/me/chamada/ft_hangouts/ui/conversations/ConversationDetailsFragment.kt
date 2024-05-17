@@ -3,7 +3,9 @@ package me.chamada.ft_hangouts.ui.conversations
 import android.Manifest
 import android.app.PendingIntent
 import android.content.pm.PackageManager
+import android.database.ContentObserver
 import android.os.Bundle
+import android.provider.Telephony
 import android.telephony.SmsManager
 import android.text.Editable
 import android.text.TextWatcher
@@ -22,11 +24,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import me.chamada.ft_hangouts.R
-import me.chamada.ft_hangouts.adapters.MessageListAdapter
+import me.chamada.ft_hangouts.adapters.SmsCursorAdapter
 import me.chamada.ft_hangouts.data.model.conversation.ConversationWithContact
 import me.chamada.ft_hangouts.databinding.FragmentConversationDetailsBinding
 import me.chamada.ft_hangouts.ui.DeleteDialogFragment
@@ -35,31 +38,37 @@ class ConversationDetailsFragment : Fragment(), MenuProvider, DeleteDialogFragme
     private val viewModel: ConversationViewModel by activityViewModels()
     private var conversation: ConversationWithContact? = null
 
-    private val adapter = MessageListAdapter()
-
     private val deleteDialogFragment = DeleteDialogFragment(this)
     private val requestPermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results ->
         binding.submitButton.isEnabled = results[Manifest.permission.SEND_SMS] == true
         if (!binding.submitButton.isEnabled) {
-            binding.messageInput.error = "TODO"
+            binding.messageInput.error = getString(R.string.permission_not_granted_send_sms)
         }
     }
 
-    /// Indicates if the RecyclerView was scrolled to bottom before a data update
-    private var wasScrolledToBottom = true
-
+    private var _adapter: SmsCursorAdapter? = null
     private var _binding: FragmentConversationDetailsBinding? = null
     private var _navbar: BottomNavigationView? = null
     private var _fab: FloatingActionButton? = null
 
     // These properties are only valid between onCreateView and onDestroyView.
+    private val adapter get() = _adapter!!
     private val binding get() = _binding!!
     private val navbar get() = _navbar!!
     private val fab get() = _fab!!
 
     companion object {
         private const val TAG = "ConversationDetails"
-        private val SMS_PERMISSIONS = arrayOf(Manifest.permission.SEND_SMS, Manifest.permission.RECEIVE_SMS)
+        private val SMS_PERMISSIONS = arrayOf(
+            Manifest.permission.SEND_SMS,
+            Manifest.permission.RECEIVE_SMS,
+        )
+    }
+
+    inner class SmsContentObserver(private val activity: AppCompatActivity) : ContentObserver(null) {
+        override fun onChange(selfChange: Boolean) = activity.runOnUiThread {
+            adapter.notifySmsDataChanged()
+        }
     }
 
     override fun onCreateView(
@@ -74,17 +83,11 @@ class ConversationDetailsFragment : Fragment(), MenuProvider, DeleteDialogFragme
 
         activity.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
+        _adapter = SmsCursorAdapter(requireContext())
+
         _binding = FragmentConversationDetailsBinding.inflate(inflater, container, false)
         _navbar = activity.findViewById(R.id.navbar)
         _fab = activity.findViewById(R.id.fab)
-
-        adapter.registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver() {
-            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                if (wasScrolledToBottom && itemCount != 0) {
-                    binding.recyclerView.smoothScrollToPosition(positionStart + itemCount - 1)
-                }
-            }
-        })
 
         binding.apply {
             recyclerView.adapter = adapter
@@ -124,8 +127,7 @@ class ConversationDetailsFragment : Fragment(), MenuProvider, DeleteDialogFragme
                                 Log.e(TAG, "Could not send SMS: ${e.message}")
                             } finally {
                                 messageInput.text.clear()
-                                println("Inserting message to conversation ${conversation.conversation.id}")
-                                viewModel.insertMessage(conversation.conversation.id, content)
+                                println("Sent message successfully")
                             }
 
                             submitButton.isEnabled = true
@@ -139,6 +141,16 @@ class ConversationDetailsFragment : Fragment(), MenuProvider, DeleteDialogFragme
             }
         }
 
+        adapter.registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                val lastVisiblePosition = (binding.recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+
+                if (lastVisiblePosition == -1 || (adapter.itemCount - lastVisiblePosition) <= 2) {
+                    binding.recyclerView.scrollToPosition(adapter.itemCount - 1)
+                }
+            }
+        })
+
         viewModel.current.observe(viewLifecycleOwner) { conversation ->
             this.conversation = conversation
 
@@ -146,15 +158,16 @@ class ConversationDetailsFragment : Fragment(), MenuProvider, DeleteDialogFragme
                 submitButton.isEnabled = true
             }
 
-            activity.supportActionBar?.title = conversation.contactName ?:
-                conversation.interlocutorPhoneNumber
+            conversation.apply {
+                adapter.setPhoneNumber(interlocutorPhoneNumber)
+
+                activity.supportActionBar?.title = contactName ?:
+                        interlocutorPhoneNumber
+            }
         }
 
-        viewModel.currentMessages.observe(viewLifecycleOwner) { messages ->
-            wasScrolledToBottom = !binding.recyclerView.canScrollVertically(1)
-
-            adapter.submitList(messages)
-        }
+        activity.contentResolver.registerContentObserver(Telephony.Sms.CONTENT_URI,
+            true, SmsContentObserver(activity))
 
         return binding.root
     }
