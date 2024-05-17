@@ -22,7 +22,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import me.chamada.ft_hangouts.R
@@ -30,7 +30,6 @@ import me.chamada.ft_hangouts.adapters.MessageListAdapter
 import me.chamada.ft_hangouts.data.model.conversation.ConversationWithContact
 import me.chamada.ft_hangouts.databinding.FragmentConversationDetailsBinding
 import me.chamada.ft_hangouts.ui.DeleteDialogFragment
-
 
 class ConversationDetailsFragment : Fragment(), MenuProvider, DeleteDialogFragment.OnConfirmListener {
     private val viewModel: ConversationViewModel by activityViewModels()
@@ -45,6 +44,9 @@ class ConversationDetailsFragment : Fragment(), MenuProvider, DeleteDialogFragme
             binding.messageInput.error = "TODO"
         }
     }
+
+    /// Indicates if the RecyclerView was scrolled to bottom before a data update
+    private var wasScrolledToBottom = true
 
     private var _binding: FragmentConversationDetailsBinding? = null
     private var _navbar: BottomNavigationView? = null
@@ -76,9 +78,16 @@ class ConversationDetailsFragment : Fragment(), MenuProvider, DeleteDialogFragme
         _navbar = activity.findViewById(R.id.navbar)
         _fab = activity.findViewById(R.id.fab)
 
+        adapter.registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                if (wasScrolledToBottom && itemCount != 0) {
+                    binding.recyclerView.smoothScrollToPosition(positionStart + itemCount - 1)
+                }
+            }
+        })
+
         binding.apply {
             recyclerView.adapter = adapter
-            //recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
             messageInput.addTextChangedListener(object: TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int)
@@ -95,7 +104,7 @@ class ConversationDetailsFragment : Fragment(), MenuProvider, DeleteDialogFragme
 
             submitButton.setOnClickListener {
                 conversation?.let { conversation ->
-                    messageInput.isEnabled = false
+                    submitButton.isEnabled = false
 
                     when (ActivityCompat.checkSelfPermission(activity, Manifest.permission.SEND_SMS)) {
                         PackageManager.PERMISSION_GRANTED -> {
@@ -115,10 +124,11 @@ class ConversationDetailsFragment : Fragment(), MenuProvider, DeleteDialogFragme
                                 Log.e(TAG, "Could not send SMS: ${e.message}")
                             } finally {
                                 messageInput.text.clear()
+                                println("Inserting message to conversation ${conversation.conversation.id}")
                                 viewModel.insertMessage(conversation.conversation.id, content)
                             }
 
-                            messageInput.isEnabled = true
+                            submitButton.isEnabled = true
                         }
                         else -> {
                             println("Requesting SMS permissions...")
@@ -141,7 +151,8 @@ class ConversationDetailsFragment : Fragment(), MenuProvider, DeleteDialogFragme
         }
 
         viewModel.currentMessages.observe(viewLifecycleOwner) { messages ->
-            println("Submitting list to adapter with ${messages.count()} messages...")
+            wasScrolledToBottom = !binding.recyclerView.canScrollVertically(1)
+
             adapter.submitList(messages)
         }
 

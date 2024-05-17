@@ -12,16 +12,17 @@ import me.chamada.ft_hangouts.data.model.conversation.Message
 interface ConversationDAO {
     @Transaction
     @Query(
-        "SELECT DISTINCT (m.conversation_id), "
+        "SELECT "
         + "m.id AS last_message_id, m.content AS last_message_content, "
-        + "s.phone_number AS last_message_sender_phone_number, "
-        + "sc.name AS last_message_sender_name, "
+        + "m.sender_id AS last_message_sender_id, "
+        + "ic.name AS contact_name, "
         + "c.* "
         + "FROM messages m "
         + "JOIN conversations AS c ON c.id = m.conversation_id "
-        + "JOIN interlocutors AS s ON s.id = m.sender_id "
-        + "JOIN contacts AS sc ON sc.phone_number = s.phone_number "
-        + "ORDER BY m.conversation_id, m.id DESC"
+        + "LEFT JOIN interlocutors AS i ON i.conversation_id = c.id "
+        + "LEFT JOIN contacts AS ic ON ic.phone_number = i.phone_number "
+        + "ORDER BY m.conversation_id, m.id DESC "
+        + "LIMIT 1"
     )
     @RewriteQueriesToDropUnusedColumns
     fun getAll(): Flow<List<ConversationPreview>>

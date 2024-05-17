@@ -64,7 +64,7 @@ class ConversationListAdapter(private val clickListener: OnConversationClickList
                 clickListener: OnConversationClickListener?
             ): ConversationViewHolder {
                 val view: View = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.list_element_contact, parent, false)
+                    .inflate(R.layout.list_element_conversation, parent, false)
 
                 return ConversationViewHolder(view, clickListener)
             }
@@ -87,7 +87,8 @@ class ConversationListAdapter(private val clickListener: OnConversationClickList
                 contactInitialsBackground.drawable.mutate().setTint(contactColor)
                 contactInitialsTextView.text = initials
 
-                conversationNameView.text = conversation.interlocutor.phoneNumber
+                conversationNameView.text = conversation.contactName?:
+                    conversation.interlocutor.phoneNumber
                 if (conversation.lastMessageContent != null) {
                     //val senderName = conversation.lastMessageSenderName?: conversation.lastMessageSenderPhoneNumber
                     /*lastMessageView.text = context.getString(
@@ -201,6 +202,11 @@ class ConversationListAdapter(private val clickListener: OnConversationClickList
 
     override fun getFilter(): Filter {
         return conversationFilter
+    }
+    override fun getItemId(position: Int): Long {
+        val conversation = getItem(position)?: return RecyclerView.NO_ID
+
+        return conversation.conversation.id
     }
 
     fun getItemPosition(id: Long): Int {

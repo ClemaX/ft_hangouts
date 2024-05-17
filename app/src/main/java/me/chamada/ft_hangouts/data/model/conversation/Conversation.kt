@@ -38,7 +38,9 @@ data class ConversationPreview(
     )
     val interlocutor: Interlocutor = Interlocutor(),
 
-    @ColumnInfo(name = "last_message_sender_phone_number") val lastMessageSenderPhoneNumber: String? = null,
-    @ColumnInfo(name = "last_message_sender_name") val lastMessageSenderName: String? = null,
+    @ColumnInfo(name = "contact_id") val contactId: Long? = null,
+    @ColumnInfo(name = "contact_name") val contactName: String? = null,
+
+    @ColumnInfo(name = "last_message_sender_id") val lastMessageSenderId: Long,
     @ColumnInfo(name = "last_message_content") val lastMessageContent: String? = null
 )
