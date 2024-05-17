@@ -25,7 +25,7 @@ class MessageListAdapter:
         companion object {
             fun create(parent: ViewGroup): OwnMessageViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
-                val binding = ListElementMessageOwnBinding.inflate(inflater)
+                val binding = ListElementMessageOwnBinding.inflate(inflater, parent, false)
 
                 return OwnMessageViewHolder(binding)
             }
