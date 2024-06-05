@@ -158,16 +158,16 @@ class ConversationListFragment:
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val receiveSmsPermission = ActivityCompat.checkSelfPermission(requireActivity(),
-            Manifest.permission.SEND_SMS)
+        val readSmsPermission = ActivityCompat.checkSelfPermission(requireActivity(),
+            Manifest.permission.READ_SMS)
 
-        if (receiveSmsPermission != PackageManager.PERMISSION_GRANTED) {
+        if (readSmsPermission != PackageManager.PERMISSION_GRANTED) {
             val requestPermission = registerForActivityResult(
                 ActivityResultContracts.RequestPermission()
             ) { isGranted ->
                 if (!isGranted) {
                     val permissionNotGrantedToast = Toast.makeText(activity,
-                        R.string.permission_not_granted_receive_sms,
+                        R.string.permission_not_granted_read_sms,
                         Toast.LENGTH_SHORT)
 
                     permissionNotGrantedToast.show()
@@ -176,7 +176,7 @@ class ConversationListFragment:
                 }
             }
 
-            requestPermission.launch(Manifest.permission.RECEIVE_SMS)
+            requestPermission.launch(Manifest.permission.READ_SMS)
         }
     }
 

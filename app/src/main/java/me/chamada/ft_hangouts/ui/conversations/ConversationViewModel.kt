@@ -14,8 +14,6 @@ import me.chamada.ft_hangouts.data.model.conversation.Conversation
 import me.chamada.ft_hangouts.data.model.conversation.ConversationPreview
 import me.chamada.ft_hangouts.data.model.conversation.ConversationWithContact
 import me.chamada.ft_hangouts.data.model.conversation.Interlocutor
-import me.chamada.ft_hangouts.data.model.conversation.Message
-import java.util.Date
 
 class ConversationViewModel(private val repository: ConversationRepository) : ViewModel() {
     private val _currentId = MutableLiveData(0L)
@@ -24,25 +22,14 @@ class ConversationViewModel(private val repository: ConversationRepository) : Vi
         ConversationWithContact()
     )
 
-    private val initialMessages = MutableLiveData(
-        emptyList<Message>()
-    )
-
     val all: LiveData<List<ConversationPreview>> = repository.all.asLiveData()
 
-    val currentId: LiveData<Long> get() = _currentId
+    private val currentId: LiveData<Long> get() = _currentId
 
     val current: LiveData<ConversationWithContact> = currentId.switchMap { id ->
         when(id) {
             0L -> initialConversation
             else -> repository.getById(id).asLiveData()
-        }
-    }
-
-    val currentMessages: LiveData<List<Message>> = currentId.switchMap { id ->
-        when(id) {
-            0L -> initialMessages
-            else -> repository.getMessages(id).asLiveData()
         }
     }
 
@@ -94,17 +81,5 @@ class ConversationViewModel(private val repository: ConversationRepository) : Vi
         else {
             createAndSelect(phoneNumber)
         }
-    }
-
-    fun insertMessage(conversationId: Long, content: String, senderId: Long = -1) =
-    viewModelScope.launch {
-        val message = Message(
-            conversationId = conversationId,
-            senderId = senderId,
-            content = content,
-            createdAt = Date()
-        )
-
-        repository.insertMessage(message)
     }
 }

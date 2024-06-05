@@ -38,5 +38,5 @@
     <string name="type_message">Type a message…</string>
     <string name="send_message">Send message</string>
     <string name="permission_not_granted_send_sms">Permission to send SMS has not been granted</string>
-    <string name="permission_not_granted_receive_sms">Permission to receive SMS has not been granted</string>
+    <string name="permission_not_granted_read_sms">Permission to read SMS has not been granted</string>
 </resources>

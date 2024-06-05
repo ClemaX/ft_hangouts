@@ -89,15 +89,8 @@ class ConversationListAdapter(private val clickListener: OnConversationClickList
 
                 conversationNameView.text = conversation.contactName?:
                     conversation.interlocutor.phoneNumber
-                if (conversation.lastMessageContent != null) {
-                    //val senderName = conversation.lastMessageSenderName?: conversation.lastMessageSenderPhoneNumber
-                    /*lastMessageView.text = context.getString(
-                        R.string.message_with_sender,
-                        senderName,
-                        conversation.lastMessageContent
-                    )*/
-                    lastMessageView.text = "TODO"
-                }
+
+                lastMessageView.text = "TODO"
 
                 if (clickListener != null)
                 {

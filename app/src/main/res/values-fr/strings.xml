@@ -37,5 +37,5 @@
     <string name="type_message">Entrez un message…</string>
     <string name="send_message">Envoyer le message</string>
     <string name="permission_not_granted_send_sms">Permission d\'envoyer des SMS non accordée</string>
-    <string name="permission_not_granted_receive_sms">Permission de recevoir des SMS non accordée</string>
+    <string name="permission_not_granted_read_sms">Permission de lire les SMS non accordée</string>
 </resources>

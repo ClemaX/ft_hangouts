@@ -37,5 +37,5 @@
     <string name="type_message">Geben Sie eine Nachricht ein…</string>
     <string name="send_message">Mitteilung senden</string>
     <string name="permission_not_granted_send_sms">SMS-Sendeberechtigung wurde nicht erlaubt</string>
-    <string name="permission_not_granted_receive_sms">SMS-Empfangberechtigung wurde nicht erlaubt</string>
+    <string name="permission_not_granted_read_sms">SMS-Leseberechtigung wurde nicht erlaubt</string>
 </resources>
