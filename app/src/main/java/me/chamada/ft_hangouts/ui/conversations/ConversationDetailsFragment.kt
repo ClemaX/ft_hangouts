@@ -46,12 +46,15 @@ class ConversationDetailsFragment : Fragment(), MenuProvider, DeleteDialogFragme
         }
     }
 
+
+    private var _smsContentObserver: SmsContentObserver? = null
     private var _adapter: SmsCursorAdapter? = null
     private var _binding: FragmentConversationDetailsBinding? = null
     private var _navbar: BottomNavigationView? = null
     private var _fab: FloatingActionButton? = null
 
     // These properties are only valid between onCreateView and onDestroyView.
+    private val smsContentObserver get() = _smsContentObserver!!
     private val adapter get() = _adapter!!
     private val binding get() = _binding!!
     private val navbar get() = _navbar!!
@@ -83,7 +86,8 @@ class ConversationDetailsFragment : Fragment(), MenuProvider, DeleteDialogFragme
 
         activity.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
-        _adapter = SmsCursorAdapter(requireContext())
+        _smsContentObserver = SmsContentObserver(activity)
+        _adapter = SmsCursorAdapter(activity)
 
         _binding = FragmentConversationDetailsBinding.inflate(inflater, container, false)
         _navbar = activity.findViewById(R.id.navbar)
@@ -166,10 +170,24 @@ class ConversationDetailsFragment : Fragment(), MenuProvider, DeleteDialogFragme
             }
         }
 
-        activity.contentResolver.registerContentObserver(Telephony.Sms.CONTENT_URI,
-            true, SmsContentObserver(activity))
-
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val activity = requireActivity() as AppCompatActivity
+
+        activity.contentResolver.registerContentObserver(Telephony.Sms.CONTENT_URI,
+            true, smsContentObserver)
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        val activity = requireActivity() as AppCompatActivity
+
+        activity.contentResolver.unregisterContentObserver(smsContentObserver)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
